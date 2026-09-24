@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { GAMES_DATA, CATEGORIES } from '@/data/gamesData';
 import { GameItem, GameCategory } from '@/types/game';
 import { X, Heart, Sparkles, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import Link from 'next/link';
 
 interface GameMenuDrawerProps {
   isOpen: boolean;
@@ -35,9 +36,9 @@ export const GameMenuDrawer: React.FC<GameMenuDrawerProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden animate-fade-in">
-      
+
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
@@ -45,7 +46,7 @@ export const GameMenuDrawer: React.FC<GameMenuDrawerProps> = ({
       {/* Slide-over panel */}
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
         <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col">
-          
+
           {/* Header */}
           <div className="p-6 border-b border-rose-100 flex items-center justify-between bg-rose-50/50">
             <div>
@@ -73,7 +74,7 @@ export const GameMenuDrawer: React.FC<GameMenuDrawerProps> = ({
 
               return (
                 <div key={cat.id} className="border-b border-rose-100 pb-4 last:border-0">
-                  
+
                   {/* Category summary toggle */}
                   <button
                     onClick={() => toggleCategory(cat.id)}
@@ -95,12 +96,10 @@ export const GameMenuDrawer: React.FC<GameMenuDrawerProps> = ({
                   {isExpanded && (
                     <div className="mt-2 space-y-1">
                       {categoryGames.map((game) => (
-                        <button
+                        <Link
                           key={game.id}
-                          onClick={() => {
-                            onSelectGame(game);
-                            onClose();
-                          }}
+                          href={game.category === 'spicy' ? `/hot-fantasies/${game.slug}` : `/games/${game.slug}`}
+                          onClick={onClose}
                           className="w-full text-left flex items-center gap-3 p-2.5 rounded-xl hover:bg-rose-50 group transition-colors"
                         >
                           <span className="text-xl group-hover:scale-110 transition-transform">
@@ -115,7 +114,7 @@ export const GameMenuDrawer: React.FC<GameMenuDrawerProps> = ({
                             </span>
                           </div>
                           <ArrowRight className="w-3.5 h-3.5 text-rose-300 opacity-0 group-hover:opacity-100 group-hover:text-rose-500 transition-all" />
-                        </button>
+                        </Link>
                       ))}
                     </div>
                   )}

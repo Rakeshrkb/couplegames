@@ -47,7 +47,7 @@ export const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({
   return (
     <section
       id={lockType ? undefined : 'featured-playground'}
-      className={lockType ? 'w-full' : 'py-8 px-4 sm:px-6 max-w-5xl mx-auto scroll-mt-20'}
+      className={lockType ? 'w-full' : 'pt-2 pb-8 px-4 sm:px-6 max-w-5xl mx-auto scroll-mt-20'}
     >
 
       {/* Category Pills */}

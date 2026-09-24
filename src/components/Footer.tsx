@@ -47,13 +47,13 @@ export const Footer: React.FC<FooterProps> = ({ onOpenGamesDrawer }) => {
               A free collection of 20+ online games for couples and friends. Spark deeper connection, romantic laughter, and unforgettable date night conversations.
             </p>
             <div className="pt-2">
-              <button
-                onClick={onOpenGamesDrawer}
+              <Link
+                href="/games"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-500 text-white text-xs font-bold shadow-sm hover:bg-rose-600 transition-colors"
               >
                 <Gamepad2 className="w-3.5 h-3.5" />
                 <span>Explore Full Library</span>
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -65,7 +65,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenGamesDrawer }) => {
             <ul className="space-y-2 text-xs font-medium text-gray-600">
               {CATEGORIES.map((cat) => (
                 <li key={cat.id}>
-                  <a                   
+                  <a
                     href={cat.id === 'spicy' ? '/hot-fantasies' : '/#games-catalog'}
                     className="hover:text-rose-600 transition-colors flex items-center gap-1.5"
                   >
