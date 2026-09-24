@@ -8,8 +8,10 @@ import { PaymentModal } from '@/components/PaymentModal';
 import { GAMES_DATA } from '@/data/gamesData';
 import { GameItem } from '@/types/game';
 import { Flame, Lock, Unlock, ArrowLeft, ShieldCheck, Zap } from 'lucide-react';
+import { GameModal } from '@/components/GameModal';
 
 export default function HotFantasiesPage() {
+  const [selectedGame, setSelectedGame] = useState<GameItem | null>(null);
   const [deviceId, setDeviceId] = useState<string>('');
   const [userStatus, setUserStatus] = useState<{
     freeSpinsLeft: number;
@@ -101,7 +103,7 @@ export default function HotFantasiesPage() {
       {/* Main Content Area */}
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8 space-y-10">
 
-              {/* User Status Bar — disabled while the site is free
+        {/* User Status Bar — disabled while the site is free
         <div className="bg-white border-2 border-pink-500 rounded-3xl p-4 sm:p-5 shadow-lg shadow-pink-100 text-gray-900 flex flex-col sm:flex-row items-center justify-between gap-4">
 
           <div className="flex items-center gap-3">
@@ -188,13 +190,7 @@ export default function HotFantasiesPage() {
                 <div className="mt-4 pt-3 border-t border-rose-50 flex items-center justify-between text-xs">
                   <span className="text-rose-600 font-semibold">{game.questionCount} prompts</span>
                   <button
-                    onClick={() => {
-                      if (!userStatus.hasActivePass && userStatus.freeSpinsUsed >= 3) {
-                        setIsPaymentModalOpen(true);
-                      } else {
-                        alert(`Starting ${game.title}!`);
-                      }
-                    }}
+                    onClick={() => setSelectedGame(game)}
                     className="px-4 py-2 rounded-full bg-rose-500 text-white font-bold hover:bg-rose-600 transition-colors shadow-2xs"
                   >
                     Play Game
@@ -206,6 +202,7 @@ export default function HotFantasiesPage() {
         </section>
 
       </main>
+      <GameModal game={selectedGame} onClose={() => setSelectedGame(null)} />
 
       {/* Payment Unlock Modal */}
       <PaymentModal

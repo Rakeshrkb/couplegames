@@ -89,7 +89,7 @@ export const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({
         <div className="text-center mb-6">
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-500 uppercase tracking-widest bg-rose-50 px-3 py-1 rounded-full mb-2">
             <Sparkles className="w-3.5 h-3.5 fill-rose-500" />
-            <span>Interactive Teaser Demo</span>
+            {/* <span>Interactive Teaser Demo</span> */}
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
             {activeQuestion.title}

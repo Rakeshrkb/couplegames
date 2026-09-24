@@ -80,21 +80,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
           </a>
 
         </div>
-
-        {/* Quick Highlights Pill Badges */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-gray-500">
-          <span className="flex items-center gap-1.5 bg-white/80 border border-rose-100 px-3 py-1 rounded-full shadow-2xs">
-            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
-            30+ Free Games
-          </span>
-          <span className="flex items-center gap-1.5 bg-white/80 border border-rose-100 px-3 py-1 rounded-full shadow-2xs">
-            ✨ Instant Play (No Login)
-          </span>
-          <span className="flex items-center gap-1.5 bg-white/80 border border-rose-100 px-3 py-1 rounded-full shadow-2xs">
-            📱 Play In Person or Long Distance
-          </span>
-        </div>
-
       </div>
 
     </section>

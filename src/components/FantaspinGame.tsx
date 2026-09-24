@@ -243,7 +243,7 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
         <button
           onClick={handleSpin}
           disabled={isSpinning}
-          className={`w-full max-w-md py-4 rounded-full font-extrabold text-base tracking-wider shadow-lg transition-all duration-200 flex items-center justify-center gap-3 ${isSpinning
+          className={`w-full max-w-md mx-auto py-4 rounded-full font-extrabold text-base tracking-wider shadow-lg transition-all duration-200 flex items-center justify-center gap-3 ${isSpinning
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed border border-gray-300'
               : 'bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white shadow-rose-200 hover:shadow-xl hover:shadow-rose-300 hover:scale-105 active:scale-95 border border-rose-400/40'
             }`}

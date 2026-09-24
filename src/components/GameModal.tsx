@@ -10,6 +10,7 @@ import { InteractivePlayground } from './InteractivePlayground';
 import { X, Play, HelpCircle, Check, Flame } from 'lucide-react';
 import { MidnightDiceGame } from './MidnightDiceGame';
 import { sendGAEvent } from '@next/third-parties/google';
+import Link from 'next/link';
 
 interface GameModalProps {
   game: GameItem | null;
@@ -38,7 +39,7 @@ export const GameModal: React.FC<GameModalProps> = ({ game, onClose }) => {
   const prompts = GAME_PROMPTS[game.id];
   const isDice = game.id === 'midnight-dice';
   const canPlay = !!playType || isDice || (prompts && prompts.length > 0);
-  
+
   // Play mode: show the actual game
   if (isPlaying && canPlay) {
     sendGAEvent('event', 'game_start', { game_id: game.id });
@@ -118,9 +119,15 @@ export const GameModal: React.FC<GameModalProps> = ({ game, onClose }) => {
             <span className="inline-block px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 text-[10px] font-extrabold uppercase tracking-wider mb-1">
               {category?.name || 'Couple Game'}
             </span>
-            <h3 className="text-2xl font-bold text-gray-900 leading-tight">
-              {game.title}
-            </h3>
+            <h4 className="text-lg font-bold text-gray-900">
+              <Link
+                href={`/games/${game.slug}`}
+                onClick={(e) => e.stopPropagation()}
+                className="hover:text-rose-600 hover:underline"
+              >
+                {game.title}
+              </Link>
+            </h4>
             <p className="text-xs font-semibold text-rose-500">
               {game.questionCount} questions · 100% Free
             </p>
