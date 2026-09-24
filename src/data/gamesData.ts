@@ -52,88 +52,21 @@ export const CATEGORIES: CategoryInfo[] = [
   }
 ];
 
-export const FANTASPIN_ITEMS: FantaspinItem[] = [
-  {
-    id: 1,
-    title: 'Twilight Balcony Embrace',
-    subtitle: 'Romantic Sunset Kiss',
-    image: '/images/fantaspin/couple_1.jpg',
-    description: 'Whisper your deepest secret romantic fantasy while holding each other tight.',
-    actionPrompt: 'Take turns whispering a secret romantic wish into your partner’s ear.'
-  },
-  {
-    id: 2,
-    title: 'Passionate Sunset Hold',
-    subtitle: 'Golden Hour Spark',
-    image: '/images/fantaspin/couple_2.jpg',
-    description: 'Give your partner a 60-second slow passionate kiss without speaking a word.',
-    actionPrompt: 'Lock eyes for 5 seconds, then share a slow passionate kiss.'
-  },
-  {
-    id: 3,
-    title: 'Silk Sheet Laughter',
-    subtitle: 'Cozy Bedroom Bliss',
-    image: '/images/fantaspin/couple_3.jpg',
-    description: 'Cuddle under warm blankets and trade 3 spicy compliments.',
-    actionPrompt: 'Tell your partner 3 things that turn you on about them right now.'
-  },
-  {
-    id: 4,
-    title: 'Rose Petal Evening',
-    subtitle: 'Candlelit Intimacy',
-    image: '/images/fantaspin/couple_4.jpg',
-    description: 'Pour a glass of wine or water and feed your partner a sweet treat by hand.',
-    actionPrompt: 'Feed your partner a strawberry or chocolate bite with eyes closed.'
-  },
-  {
-    id: 5,
-    title: 'Starlight Jacuzzi Dip',
-    subtitle: 'Steamy Night Spa',
-    image: '/images/fantaspin/couple_5.jpg',
-    description: 'Give your partner a soothing 2-minute neck and shoulder massage.',
-    actionPrompt: 'Dim the lights and give a slow relaxing massage.'
-  },
-  {
-    id: 6,
-    title: 'Fireplace Cozy Cuddle',
-    subtitle: 'Warm Hearth Romance',
-    image: '/images/fantaspin/couple_6.jpg',
-    description: 'Re-enact your favorite romantic movie kiss scene together.',
-    actionPrompt: 'Re-enact a dramatic movie kiss scene with full passion.'
-  },
-  {
-    id: 7,
-    title: 'Moonlit Beach Walk',
-    subtitle: 'Starlit Serenade',
-    image: '/images/fantaspin/couple_7.jpg',
-    description: 'Put on a slow song and slow-dance together in the living room.',
-    actionPrompt: 'Play a slow song and hold each other while dancing.'
-  },
-  {
-    id: 8,
-    title: 'Secret Whispering Lounge',
-    subtitle: 'Intimate Night Vibe',
-    image: '/images/fantaspin/couple_8.jpg',
-    description: 'Answer a spicy truth question chosen by your partner.',
-    actionPrompt: 'Your partner gets to ask you 1 spicy question you MUST answer truthfully!'
-  },
-  {
-    id: 9,
-    title: 'Private Rooftop Spa',
-    subtitle: 'Luxury Escape',
-    image: '/images/fantaspin/couple_9.jpg',
-    description: 'Share a secret wild fantasy you have never admitted out loud.',
-    actionPrompt: 'Describe a dream romantic getaway or night scenario you want to try.'
-  },
-  {
-    id: 10,
-    title: 'Midnight Passion Rain',
-    subtitle: 'Electric Connection',
-    image: '/images/fantaspin/couple_10.jpg',
-    description: 'Complete a playful 30-second sensual dare chosen by the spinner.',
-    actionPrompt: 'Give your partner 10 gentle kisses on their forehead, cheeks, and neck.'
+export const FANTASPIN_ITEMS: FantaspinItem[] = Array.from(
+  { length: 529 },
+  (_, index) => {
+    const id = index + 1;
+
+    return {
+      id,
+      title: `Fantasy #${id}`,
+      subtitle: 'Fantasy Moment',
+      image: `/images/fantaspin/${String(id).padStart(3, '0')}.png`,
+      description: 'A fantasy moment for you and your partner.',
+      actionPrompt: 'Enjoy this moment together.',
+    };
   }
-];
+);
 
 export const GAMES_DATA: GameItem[] = [
   // Hot Fantasies (18+)
@@ -150,9 +83,7 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Spinning fantasy wheel with 10 couple moments & dares.',
     sampleQuestions: [
       'Twilight Balcony Embrace — Whisper a secret romantic wish into your partner’s ear.',
-      'Passionate Sunset Hold — Share a slow 60-second kiss with eyes closed.',
-      'Starlight Jacuzzi Dip — Give a 2-minute soothing shoulder massage.',
-      'Fireplace Cozy Cuddle — Re-enact a dramatic romantic movie kiss scene.'
+      'Passionate Sunset Hold — Share a slow 60-second kiss with eyes closed.'
     ]
   },
   {
@@ -161,14 +92,13 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'naughty-truth-or-dare-18-plus',
     icon: '💋',
     category: 'spicy',
-    questionCount: 85,
+    questionCount: 20,
     badge: '18+ Hot',
     description: 'Spicy, daring prompts crafted for adventurous couples looking to heat up date night.',
     shortDescription: 'Spicy 18+ truths & daring challenges.',
     sampleQuestions: [
       'Truth: What is one romantic fantasy of mine you find irresistible?',
       'Dare: Whisper the spiciest compliment you can think of in my ear.',
-      'Truth: What outfit of mine makes your heart beat fastest?'
     ]
   },
   {
@@ -184,7 +114,6 @@ export const GAMES_DATA: GameItem[] = [
     sampleQuestions: [
       'Action: 30-second back massage + Spot: Living room sofa',
       'Action: Gentle kiss + Spot: Neck & collarbone',
-      'Action: Whisper secret wish + Spot: Under cozy blankets'
     ]
   },
 
@@ -195,15 +124,13 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'would-you-rather-for-couples',
     icon: '🤔',
     category: 'party',
-    questionCount: 150,
+    questionCount: 32,
     badge: 'Popular',
     description: 'Pick your side between two funny, absurd, or deep romantic scenarios and ask your partner why!',
     shortDescription: '150 dilemma scenarios built for couples.',
     sampleQuestions: [
       'Would you rather live in a cozy mountain cabin or a beach house by the ocean?',
       'Would you rather always know when your partner is lying or never be able to lie yourself?',
-      'Would you rather relive our first date or skip forward to our next dream vacation?',
-      'Would you rather have a surprise weekend getaway every month or a huge annual trip?'
     ]
   },
   {
@@ -218,9 +145,7 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Revealing truths and spicy dares for date night.',
     sampleQuestions: [
       'Truth: What was your exact first impression of me when we met?',
-      'Dare: Give your partner a 30-second back massage right now.',
-      'Truth: What is one secret habit of mine that you secretly find adorable?',
-      'Dare: Whisper the funniest compliment you can think of into your partner’s ear.'
+      'Dare: Give your partner a 30-second back massage right now.'
     ]
   },
   {
@@ -229,15 +154,13 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'this-or-that-for-couples',
     icon: '⚡',
     category: 'party',
-    questionCount: 100,
+    questionCount: 21,
     badge: 'Trending',
     description: 'Rapid-fire preferences! Test how synced up your tastes and romantic vibes really are.',
     shortDescription: '100 fast choices to compare tastes and habits.',
     sampleQuestions: [
       'Late night food run OR Cozy breakfast in bed?',
       'Spontaneous road trip OR Meticulously planned vacation?',
-      'Movie night cuddling OR Dancing out at a club?',
-      'Sweet romantic love notes OR Practical acts of service?'
     ]
   },
   {
@@ -253,8 +176,6 @@ export const GAMES_DATA: GameItem[] = [
     sampleQuestions: [
       'Never have I ever stalked your social media before our first date.',
       'Never have I ever pretended to like a song just because you liked it.',
-      'Never have I ever gotten jealous over a dream I had about you.',
-      'Never have I ever practiced what to say before calling you.'
     ]
   },
   {
@@ -268,9 +189,7 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Playful pointing game for couple habits.',
     sampleQuestions: [
       'Who is most likely to fall asleep during a movie at the theater?',
-      'Who is most likely to buy unnecessary things on Amazon late at night?',
       'Who is most likely to initiate a spontaneous kiss in public?',
-      'Who is most likely to suggest taking a random road trip?'
     ]
   },
   {
@@ -285,7 +204,6 @@ export const GAMES_DATA: GameItem[] = [
     sampleQuestions: [
       'Guess which childhood memory is a total fabrication!',
       'Guess which celebrity crush I used to have in middle school.',
-      'Guess which meal attempt was a complete kitchen disaster.'
     ]
   },
   {
@@ -300,7 +218,6 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Spicy questions or take a sip!',
     sampleQuestions: [
       'What is something you wanted to do on our first date but were too shy?',
-      'What outfit of mine is your absolute favorite?',
       'What was the exact moment you realized you were falling for me?'
     ]
   },
@@ -317,8 +234,7 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Easy, fun questions to warm up any date.',
     sampleQuestions: [
       'If our relationship were a movie genre, what would it be?',
-      'What is your ultimate comforting meal after a chaotic day?',
-      'If you could master any secret talent overnight, what would it be?'
+      'What is your ultimate comforting meal after a chaotic day?'
     ]
   },
   {
@@ -333,7 +249,6 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Fast-paced trivia challenge for two.',
     sampleQuestions: [
       'Name 3 things you love about my personality in 5 seconds!',
-      'Name 3 places you want us to travel together in 5 seconds!',
       'Name 3 songs that remind you of us in 5 seconds!'
     ]
   },
@@ -349,7 +264,6 @@ export const GAMES_DATA: GameItem[] = [
     sampleQuestions: [
       'If we had to survive a zombie apocalypse, who would be the strategist and who would be the distraction?',
       'What weird habit do I have that you think is secretly funny?',
-      'If we traded lives for 24 hours, what would be the hardest part of my daily routine?'
     ]
   },
   {
@@ -364,8 +278,7 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Test how well you remember your history.',
     sampleQuestions: [
       'What exact song was playing when we had our first memorable car drive?',
-      'What was the very first meal we cooked together?',
-      'What color was I wearing on our second date?'
+      'What was the very first meal we cooked together?'
     ]
   },
   {
@@ -379,8 +292,7 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Rapid Q&A under the spot-light.',
     sampleQuestions: [
       'Quick! What is my favorite guilty pleasure TV show?',
-      'What is my go-to coffee order without hesitating?',
-      'What nickname do I secretly love when you call me?'
+      'What is my go-to coffee order without hesitating?'
     ]
   },
 
@@ -397,8 +309,7 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Thoughtful prompts for deep emotional bonding.',
     sampleQuestions: [
       'What is a dream you have for your future that you haven’t talked about enough?',
-      'How have I helped you grow as a person since we met?',
-      'What makes you feel most loved and appreciated during difficult weeks?'
+      'How have I helped you grow as a person since we met?'
     ]
   },
   {
@@ -413,8 +324,7 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Cozy, tender late-night conversation.',
     sampleQuestions: [
       'What was the highlights of your day today with me?',
-      'What is one thing you are deeply grateful for in our relationship right now?',
-      'When do you feel most at peace when we are together?'
+      'What is one thing you are deeply grateful for in our relationship right now?'
     ]
   },
 
@@ -431,8 +341,7 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'The classic science-backed love study deck.',
     sampleQuestions: [
       'Given the choice of anyone in the world, who would you want as a dinner guest?',
-      'Would you like to be famous? In what way?',
-      'Before making a telephone call, do you ever rehearse what you are going to say? Why?'
+      'Would you like to be famous? In what way?'
     ]
   },
   {
@@ -464,8 +373,7 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Designed for video calls & virtual dates.',
     sampleQuestions: [
       'Show me 1 object in your room that has a story behind it!',
-      'What is the very first thing we will do when we see each other next?',
-      'Sync up and stream our favorite movie while answering live prompts!'
+      'What is the very first thing we will do when we see each other next?'
     ]
   },
   {
@@ -479,8 +387,7 @@ export const GAMES_DATA: GameItem[] = [
     shortDescription: 'Brainstorm shared travel & life dreams.',
     sampleQuestions: [
       'Where is one bucket-list destination we must visit in the next 3 years?',
-      'What extreme activity (skydiving, hot air balloon) should we try together?',
-      'What home style would we design if budget was unlimited?'
+      'What extreme activity (skydiving, hot air balloon) should we try together?'
     ]
   }
 ];
@@ -509,6 +416,365 @@ export const HERO_TEASER_QUESTIONS: TeaserQuestion[] = [
       votesA: 62,
       votesB: 38
     }
+  }, {
+    id: 'wyr-3',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Have a cozy movie night at home 🍿',
+      optionB: 'Go out for a fancy dinner date 🍷',
+      votesA: 58,
+      votesB: 42
+    }
+  },
+  {
+    id: 'wyr-4',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Always know what your partner is thinking 🧠',
+      optionB: 'Always know how your partner is feeling 💞',
+      votesA: 41,
+      votesB: 59
+    }
+  },
+  {
+    id: 'wyr-5',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Relive your first date 💐',
+      optionB: 'Relive your first kiss 💋',
+      votesA: 47,
+      votesB: 53
+    }
+  },
+  {
+    id: 'wyr-6',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Receive a handwritten love letter ✉️',
+      optionB: 'Receive a surprise gift 🎁',
+      votesA: 64,
+      votesB: 36
+    }
+  },
+  {
+    id: 'wyr-7',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Travel the world together for a year ✈️',
+      optionB: 'Get your dream home together right now 🏡',
+      votesA: 55,
+      votesB: 45
+    }
+  },
+  {
+    id: 'wyr-8',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Cook dinner together every night 👩‍🍳',
+      optionB: 'Order takeout together every night 🥡',
+      votesA: 61,
+      votesB: 39
+    }
+  },
+  {
+    id: 'wyr-9',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Have a big, fun wedding with everyone 🎉',
+      optionB: 'Have a small, intimate wedding 💍',
+      votesA: 38,
+      votesB: 62
+    }
+  },
+  {
+    id: 'wyr-10',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Spend a lazy Sunday in bed together 🛏️',
+      optionB: 'Spend an adventurous Sunday outdoors 🥾',
+      votesA: 66,
+      votesB: 34
+    }
+  },
+  {
+    id: 'wyr-11',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Always have the last word in arguments 🗣️',
+      optionB: 'Always be the first to say sorry 🙏',
+      votesA: 29,
+      votesB: 71
+    }
+  },
+  {
+    id: 'wyr-12',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Get a surprise date planned by your partner 🎈',
+      optionB: 'Plan a surprise date for your partner 📝',
+      votesA: 57,
+      votesB: 43
+    }
+  },
+  {
+    id: 'wyr-13',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Slow dance in the kitchen 💃',
+      optionB: 'Sing karaoke together in public 🎤',
+      votesA: 68,
+      votesB: 32
+    }
+  },
+  {
+    id: 'wyr-14',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Get a cute couple tattoo 🖋️',
+      optionB: 'Wear matching outfits for a whole day 👕',
+      votesA: 35,
+      votesB: 65
+    }
+  },
+  {
+    id: 'wyr-15',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Watch the sunrise together 🌅',
+      optionB: 'Watch the stars together at night ✨',
+      votesA: 40,
+      votesB: 60
+    }
+  },
+  {
+    id: 'wyr-16',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Read your partner’s old diary 📔',
+      optionB: 'Let your partner read your old diary 🙈',
+      votesA: 52,
+      votesB: 48
+    }
+  },
+  {
+    id: 'wyr-17',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Have a pet dog together 🐶',
+      optionB: 'Have a pet cat together 🐱',
+      votesA: 59,
+      votesB: 41
+    }
+  },
+  {
+    id: 'wyr-18',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Get a long hug every morning 🤗',
+      optionB: 'Get a goodnight kiss every night 😘',
+      votesA: 46,
+      votesB: 54
+    }
+  },
+  {
+    id: 'wyr-19',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Go on a romantic trip to Paris 🗼',
+      optionB: 'Go on a beach escape to the Maldives 🏝️',
+      votesA: 37,
+      votesB: 63
+    }
+  },
+  {
+    id: 'wyr-20',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Know the exact day you’ll meet your soulmate 📅',
+      optionB: 'Be surprised when it happens 💫',
+      votesA: 33,
+      votesB: 67
+    }
+  },
+  {
+    id: 'wyr-21',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Give up your phone for a week together 📵',
+      optionB: 'Give up sweets for a month together 🍫',
+      votesA: 44,
+      votesB: 56
+    }
+  },
+  {
+    id: 'wyr-22',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Go back in time to meet your partner sooner ⏪',
+      optionB: 'Skip ahead to see your future together ⏩',
+      votesA: 58,
+      votesB: 42
+    }
+  },
+  {
+    id: 'wyr-23',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Take a cooking class together 🍝',
+      optionB: 'Take a dance class together 🕺',
+      votesA: 53,
+      votesB: 47
+    }
+  },
+  {
+    id: 'wyr-24',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Have a romantic picnic in the park 🧺',
+      optionB: 'Have a candlelight dinner at home 🕯️',
+      votesA: 49,
+      votesB: 51
+    }
+  },
+  {
+    id: 'wyr-25',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Be a little too clingy 🫶',
+      optionB: 'Be a little too distant 🚶',
+      votesA: 63,
+      votesB: 37
+    }
+  },
+  {
+    id: 'wyr-26',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Your partner remembers every small detail 🧩',
+      optionB: 'Your partner makes big romantic gestures 🌹',
+      votesA: 60,
+      votesB: 40
+    }
+  },
+  {
+    id: 'wyr-27',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Go on a road trip with no plan 🗺️',
+      optionB: 'Go on a cruise with everything planned 🚢',
+      votesA: 57,
+      votesB: 43
+    }
+  },
+  {
+    id: 'wyr-28',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Share every dessert forever 🍰',
+      optionB: 'Never have to share your fries again 🍟',
+      votesA: 45,
+      votesB: 55
+    }
+  },
+  {
+    id: 'wyr-29',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Live in a big city apartment 🏙️',
+      optionB: 'Live in a quiet countryside home 🌾',
+      votesA: 42,
+      votesB: 58
+    }
+  },
+  {
+    id: 'wyr-30',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Get a sweet good-morning text every day ☀️',
+      optionB: 'Get a surprise “thinking of you” call 📞',
+      votesA: 54,
+      votesB: 46
+    }
+  },
+  {
+    id: 'wyr-31',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Build a blanket fort together 🏰',
+      optionB: 'Have a pillow fight together 🪶',
+      votesA: 51,
+      votesB: 49
+    }
+  },
+  {
+    id: 'wyr-32',
+    type: 'would_you_rather',
+    title: 'Would You Rather',
+    prompt: 'Pick your side. Ask your partner why!',
+    options: {
+      optionA: 'Grow old together in your hometown 🏘️',
+      optionB: 'Grow old together somewhere totally new 🌏',
+      votesA: 39,
+      votesB: 61
+    }
   },
   {
     id: 'tod-1',
@@ -517,6 +783,165 @@ export const HERO_TEASER_QUESTIONS: TeaserQuestion[] = [
     prompt: 'Choose sweet vulnerability or a fun date night challenge.',
     truthText: 'What was the exact moment or gesture when you knew I was special to you?',
     dareText: 'Hold hands, look into your partner’s eyes for 15 seconds without laughing, then kiss!'
+  }, {
+    id: 'tod-2',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What was your very first impression of me, honestly?',
+    dareText: 'Give your partner a 30-second shoulder massage right now.'
+  },
+  {
+    id: 'tod-3',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What is one small habit of mine that you secretly find adorable?',
+    dareText: 'Whisper three things you love about your partner into their ear.'
+  },
+  {
+    id: 'tod-4',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'When did you first realize you were falling for me?',
+    dareText: 'Slow dance with your partner to a song of their choice.'
+  },
+  {
+    id: 'tod-5',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What is your favorite memory of us so far?',
+    dareText: 'Recreate your first kiss as closely as you can remember it.'
+  },
+  {
+    id: 'tod-6',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'Did you ever stalk my social media before we started dating?',
+    dareText: 'Let your partner post anything they want on your story.'
+  },
+  {
+    id: 'tod-7',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What is one thing you have never told me but always wanted to?',
+    dareText: 'Write a short love note and hide it somewhere your partner will find it later.'
+  },
+  {
+    id: 'tod-8',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What outfit of mine makes your heart skip a beat?',
+    dareText: 'Do your best impression of your partner for 20 seconds.'
+  },
+  {
+    id: 'tod-9',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What is one thing about me you would never want to change?',
+    dareText: 'Serenade your partner with a love song, off-key is allowed.'
+  },
+  {
+    id: 'tod-10',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'Have you ever been jealous about someone in my life?',
+    dareText: 'Give your partner 10 kisses anywhere on their face.'
+  },
+  {
+    id: 'tod-11',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What do you think is our biggest strength as a couple?',
+    dareText: 'Hold your partner’s hand and describe your dream date together.'
+  },
+  {
+    id: 'tod-12',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What song reminds you of me the most?',
+    dareText: 'Play that song right now and dance to it together.'
+  },
+  {
+    id: 'tod-13',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What was the most nervous you have ever been around me?',
+    dareText: 'Let your partner feed you a snack blindfolded and guess what it is.'
+  },
+  {
+    id: 'tod-14',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What is one dream you want us to achieve together?',
+    dareText: 'Draw a portrait of your partner in 60 seconds and show it off.'
+  },
+  {
+    id: 'tod-15',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What is the sweetest thing I have ever done for you?',
+    dareText: 'Give your partner a warm hug that lasts a full 20 seconds.'
+  },
+  {
+    id: 'tod-16',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What is one thing you pretended to like just to impress me?',
+    dareText: 'Call your partner by a new cute nickname for the rest of the night.'
+  },
+  {
+    id: 'tod-17',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'When do you feel most loved by me?',
+    dareText: 'Tell your partner a cheesy pickup line with a straight face.'
+  },
+  {
+    id: 'tod-18',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What is something you want to try together that we have never done?',
+    dareText: 'Plan your next date in 60 seconds, out loud, and commit to it.'
+  },
+  {
+    id: 'tod-19',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What is the funniest moment we have ever shared?',
+    dareText: 'Try to make your partner laugh within 30 seconds, no tickling.'
+  },
+  {
+    id: 'tod-20',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'If you could relive one day with me, which day would it be?',
+    dareText: 'Kiss your partner on the forehead and say “I’m lucky to have you.”'
+  },
+  {
+    id: 'tod-21',
+    type: 'truth_or_dare',
+    title: 'Truth or Dare',
+    prompt: 'Choose sweet vulnerability or a fun date night challenge.',
+    truthText: 'What is one thing I do that always makes your bad day better?',
+    dareText: 'Give your partner a compliment for every letter of their name.'
   },
   {
     id: 'tot-1',
@@ -529,5 +954,244 @@ export const HERO_TEASER_QUESTIONS: TeaserQuestion[] = [
       votesA: 55,
       votesB: 45
     }
-  }
+  }, {
+    id: 'tot-2',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Morning Coffee Together ☕',
+      optionB: 'Evening Chai Together 🍵',
+      votesA: 48,
+      votesB: 52
+    }
+  },
+  {
+    id: 'tot-3',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Rom-Com Movie Marathon 💕',
+      optionB: 'Horror Movie Night Cuddles 👻',
+      votesA: 57,
+      votesB: 43
+    }
+  },
+  {
+    id: 'tot-4',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Texting All Day 💬',
+      optionB: 'One Long Call at Night 📞',
+      votesA: 39,
+      votesB: 61
+    }
+  },
+  {
+    id: 'tot-5',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Pizza Night 🍕',
+      optionB: 'Sushi Date 🍣',
+      votesA: 63,
+      votesB: 37
+    }
+  },
+  {
+    id: 'tot-6',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Holding Hands in Public 🤝',
+      optionB: 'Secret Cuddles at Home 🫂',
+      votesA: 46,
+      votesB: 54
+    }
+  },
+  {
+    id: 'tot-7',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Board Games Night 🎲',
+      optionB: 'Video Games Night 🎮',
+      votesA: 44,
+      votesB: 56
+    }
+  },
+  {
+    id: 'tot-8',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Rainy Day Indoors 🌧️',
+      optionB: 'Sunny Day Outdoors 🌞',
+      votesA: 58,
+      votesB: 42
+    }
+  },
+  {
+    id: 'tot-9',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Flowers as a Gift 💐',
+      optionB: 'Chocolates as a Gift 🍫',
+      votesA: 51,
+      votesB: 49
+    }
+  },
+  {
+    id: 'tot-10',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Early Bird Couple 🐦',
+      optionB: 'Night Owl Couple 🦉',
+      votesA: 34,
+      votesB: 66
+    }
+  },
+  {
+    id: 'tot-11',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Bike Ride Together 🏍️',
+      optionB: 'Long Drive Together 🚘',
+      votesA: 47,
+      votesB: 53
+    }
+  },
+  {
+    id: 'tot-12',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Ice Cream Date 🍦',
+      optionB: 'Bakery & Cake Date 🧁',
+      votesA: 60,
+      votesB: 40
+    }
+  },
+  {
+    id: 'tot-13',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Couple Selfies 🤳',
+      optionB: 'Candid Photos of Each Other 📸',
+      votesA: 42,
+      votesB: 58
+    }
+  },
+  {
+    id: 'tot-14',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Concert Date 🎶',
+      optionB: 'Comedy Show Date 😂',
+      votesA: 55,
+      votesB: 45
+    }
+  },
+  {
+    id: 'tot-15',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Big Spoon 🥄',
+      optionB: 'Little Spoon 🤏',
+      votesA: 45,
+      votesB: 55
+    }
+  },
+  {
+    id: 'tot-16',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Planned Anniversary Surprise 🎁',
+      optionB: 'Spontaneous Random-Day Surprise 🎉',
+      votesA: 38,
+      votesB: 62
+    }
+  },
+  {
+    id: 'tot-17',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Shopping Spree Together 🛍️',
+      optionB: 'Spa Day Together 🧖',
+      votesA: 36,
+      votesB: 64
+    }
+  },
+  {
+    id: 'tot-18',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Sweet Voice Notes 🎙️',
+      optionB: 'Cute Memes & Reels 📱',
+      votesA: 53,
+      votesB: 47
+    }
+  },
+  {
+    id: 'tot-19',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Hiking to a Viewpoint 🥾',
+      optionB: 'Rooftop Café with a View 🌇',
+      votesA: 41,
+      votesB: 59
+    }
+  },
+  {
+    id: 'tot-20',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Matching Couple Rings 💍',
+      optionB: 'Matching Couple Hoodies 🧥',
+      votesA: 49,
+      votesB: 51
+    }
+  },
+  {
+    id: 'tot-21',
+    type: 'this_or_that',
+    title: 'This or That',
+    prompt: 'Compare your preferences instantly.',
+    options: {
+      optionA: 'Winter Snuggles ❄️',
+      optionB: 'Summer Beach Walks 🌴',
+      votesA: 56,
+      votesB: 44
+    }
+  },
 ];

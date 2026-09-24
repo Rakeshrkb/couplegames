@@ -9,49 +9,130 @@ interface FantaspinGameProps {
   onClose?: () => void;
 }
 
+// Height of each item in the vertical reel strip in pixels
+const ITEM_HEIGHT = 220;
+// Only this many images are rendered in the reel; the last one is the winner
+const REEL_SIZE = 15;
+// Change this if your localStorage key is named differently
+const STORAGE_KEY = 'fantaspinStatus';
+
+interface SpinStatus {
+  success: boolean;
+  deviceId: string;
+  freeSpinsLeft: number;
+  freeSpinsUsed: number;
+  hasActivePass: boolean;
+}
+
+const readStatus = (): SpinStatus | null => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as SpinStatus) : null;
+  } catch {
+    return null;
+  }
+};
+
+const saveStatus = (status: SpinStatus) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(status));
+  } catch {
+    // ignore storage errors (private mode etc.)
+  }
+};
+
+// 14 random, unique filler images + the selected image at the end
+const buildReel = (target: FantaspinItem): FantaspinItem[] => {
+  const used = new Set<number>([target.id]);
+  const fillers: FantaspinItem[] = [];
+
+  while (fillers.length < REEL_SIZE - 1) {
+    const item = FANTASPIN_ITEMS[Math.floor(Math.random() * FANTASPIN_ITEMS.length)];
+    if (!used.has(item.id)) {
+      used.add(item.id);
+      fillers.push(item);
+    }
+  }
+
+  return [...fillers, target];
+};
+
 export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedItem, setSelectedItem] = useState<FantaspinItem | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [scrollOffsetY, setScrollOffsetY] = useState(0);
+  // Deterministic initial reel (no Math.random) to avoid hydration mismatch
+  const [reelItems, setReelItems] = useState<FantaspinItem[]>(() =>
+    FANTASPIN_ITEMS.slice(0, REEL_SIZE)
+  );
   const reelRef = useRef<HTMLDivElement>(null);
 
-  // Height of each item in the vertical reel strip in pixels
-  const ITEM_HEIGHT = 220; 
-  const TOTAL_ITEMS = FANTASPIN_ITEMS.length;
+  // Paid users spin locally; everyone else goes through the backend free-spin check
+  const checkSpinAllowed = async (): Promise<boolean> => {
+    const status = readStatus();
+    if (status?.hasActivePass) return true;
 
-  // We repeat items 5 times for a continuous long vertical scrolling reel
-  const REPEATED_ITEMS = [...FANTASPIN_ITEMS, ...FANTASPIN_ITEMS, ...FANTASPIN_ITEMS, ...FANTASPIN_ITEMS, ...FANTASPIN_ITEMS];
+    try {
+      const response = await fetch('/api/fantaspin/spin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
 
-  const handleSpin = () => {
+      const data = await response.json();
+
+      if (response.status === 402) {
+        alert(data.message);
+        return false;
+      }
+
+      if (!response.ok || !data.success) {
+        alert('Something went wrong. Please try again.');
+        return false;
+      }
+
+      saveStatus(data as SpinStatus);
+      return true;
+    } catch (error) {
+      console.error('Spin request failed:', error);
+      alert('Unable to connect to the server.');
+      return false;
+    }
+  };
+
+  const handleSpin = async () => {
     if (isSpinning) return;
 
+    // Lock the button while we check, so double clicks don't fire two requests
     setIsSpinning(true);
+
+    const allowed = await checkSpinAllowed();
+    if (!allowed) {
+      setIsSpinning(false);
+      return;
+    }
+
     setShowResult(false);
     setSelectedItem(null);
 
-    // Pick a random target index (between 0 and TOTAL_ITEMS - 1)
-    const randomIndex = Math.floor(Math.random() * TOTAL_ITEMS);
-    const targetItem = FANTASPIN_ITEMS[randomIndex];
+    const targetItem = FANTASPIN_ITEMS[Math.floor(Math.random() * FANTASPIN_ITEMS.length)];
 
-    // Calculate final scroll position (spin through 3-4 full loops + landed index)
-    const extraLoops = 3;
-    const finalIndex = TOTAL_ITEMS * extraLoops + randomIndex;
-    const targetOffset = finalIndex * ITEM_HEIGHT;
+    setReelItems(buildReel(targetItem));
+    setScrollOffsetY(0);
 
-    // Animate spin: start fast, then decelerate
+    // Last item in the reel is the winner
+    const targetOffset = (REEL_SIZE - 1) * ITEM_HEIGHT;
+
     const startTime = performance.now();
-    const duration = 3500; // 3.5 seconds spin duration
+    const duration = 3500;
 
     const animateSpin = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
-      // Cubic ease-out curve for natural slot deceleration
-      const easeOut = 1 - Math.pow(1 - progress, 3);
-      const currentOffset = targetOffset * easeOut;
 
-      setScrollOffsetY(currentOffset);
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      setScrollOffsetY(targetOffset * easeOut);
 
       if (progress < 1) {
         requestAnimationFrame(animateSpin);
@@ -76,15 +157,15 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
       <div className="relative z-10 text-center mb-6">
         <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-100 border border-rose-200 text-rose-700 text-xs font-extrabold uppercase tracking-widest mb-3 shadow-2xs">
           <Flame className="w-4 h-4 text-rose-500 fill-rose-500 animate-pulse" />
-          <span>18+ Wild & Spicy Couple Reel</span>
+          {/* <span>18+ Wild & Spicy Couple Reel</span> */}
         </div>
         
         <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
           Fantaspin <span className="font-serif italic font-normal text-rose-500">🎰</span>
         </h2>
-        <p className="text-xs sm:text-sm text-gray-600 mt-1 max-w-md mx-auto font-normal">
+        {/* <p className="text-xs sm:text-sm text-gray-600 mt-1 max-w-md mx-auto font-normal">
           Click spin! The couple images rush upwards fast and lock onto an intimate moment for the two of you.
-        </p>
+        </p> */}
       </div>
 
       {/* SLOT MACHINE REEL CONTAINER */}
@@ -104,17 +185,17 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
           className="h-[220px] rounded-2xl bg-gray-950 border-4 border-rose-300 overflow-hidden relative shadow-inner"
           ref={reelRef}
         >
-          {/* Vertical Scrolling Strip */}
+          {/* Vertical Scrolling Strip (only REEL_SIZE items rendered) */}
           <div 
-            className="w-full flex flex-col transition-transform"
+            className="w-full flex flex-col"
             style={{
-              transform: `translateY(-${scrollOffsetY % (TOTAL_ITEMS * ITEM_HEIGHT)}px)`,
+              transform: `translateY(-${scrollOffsetY}px)`,
               willChange: 'transform'
             }}
           >
-            {REPEATED_ITEMS.map((item, idx) => (
+            {reelItems.map((item, idx) => (
               <div 
-                key={idx}
+                key={`${item.id}-${idx}`}
                 className="h-[220px] w-full p-3 flex items-center gap-4 bg-gray-950 text-white border-b border-rose-950 shrink-0"
               >
                 {/* Couple Image Thumbnail */}
@@ -160,7 +241,7 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
           }`}
         >
           <RefreshCw className={`w-5 h-5 ${isSpinning ? 'animate-spin' : ''}`} />
-          <span>{isSpinning ? 'SPINNING THE REEL...' : 'SPIN THE FANTASY 🎰'}</span>
+          <span>{isSpinning ? 'SPINNING THE REEL...' : 'SPIN THE WHEEL'}</span>
         </button>
       </div>
 

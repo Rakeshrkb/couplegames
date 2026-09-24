@@ -1,17 +1,71 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { PromptCardGame } from './PromptCardGame';
+import { GAME_PROMPTS, NAUGHTY_TOD_QUESTIONS } from '@/data/gamePrompts';
 import { GameItem } from '@/types/game';
 import { CATEGORIES } from '@/data/gamesData';
 import { FantaspinGame } from './FantaspinGame';
+import { InteractivePlayground } from './InteractivePlayground';
 import { X, Play, HelpCircle, Check, Flame } from 'lucide-react';
+import { MidnightDiceGame } from './MidnightDiceGame';
 
 interface GameModalProps {
   game: GameItem | null;
   onClose: () => void;
 }
 
+// Games that are fully playable → which playground type they use
+const PLAYABLE_GAMES: Record<string, 'would_you_rather' | 'truth_or_dare' | 'this_or_that'> = {
+  'would-you-rather': 'would_you_rather',
+  'truth-or-dare': 'truth_or_dare',
+  'this-or-that': 'this_or_that',
+  'naughty-truth-or-dare': 'truth_or_dare',
+};
+
 export const GameModal: React.FC<GameModalProps> = ({ game, onClose }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  // Reset to the preview screen whenever a different game is opened
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [game?.id]);
+
+  if (!game) return null;
+
+  const playType = PLAYABLE_GAMES[game.id];
+  const prompts = GAME_PROMPTS[game.id];
+  const isDice = game.id === 'midnight-dice';
+  const canPlay = !!playType || isDice || (prompts && prompts.length > 0);
+
+  // Play mode: show the actual game
+  if (isPlaying && canPlay) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
+        <div className="absolute inset-0" onClick={onClose} />
+        <div className="relative w-full max-w-3xl z-10 max-h-[90vh] overflow-y-auto">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 z-30 w-9 h-9 rounded-full bg-rose-50 text-gray-500 hover:text-rose-600 hover:bg-rose-100 flex items-center justify-center transition-colors"
+            aria-label="Close game"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          {isDice ? (
+            <MidnightDiceGame />
+          ) : playType ? (
+            <InteractivePlayground
+              initialType={playType}
+              lockType
+              questions={game.id === 'naughty-truth-or-dare' ? NAUGHTY_TOD_QUESTIONS : undefined}
+            />
+          ) : (
+            <PromptCardGame title={game.title} icon={game.icon} prompts={prompts} />
+          )}
+        </div>
+      </div>
+    );
+  }
   if (!game) return null;
 
   // Special handle for custom game "Fantaspin"
@@ -37,13 +91,13 @@ export const GameModal: React.FC<GameModalProps> = ({ game, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate-fade-in">
-      
+
       {/* Backdrop click */}
       <div className="absolute inset-0" onClick={onClose} />
 
       {/* Modal Content */}
       <div className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-rose-100 z-10 max-h-[90vh] overflow-y-auto">
-        
+
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -82,10 +136,10 @@ export const GameModal: React.FC<GameModalProps> = ({ game, onClose }) => {
             <HelpCircle className="w-4 h-4 text-rose-500" />
             <span>Sample Questions Preview</span>
           </h4>
-          
+
           <div className="space-y-2.5">
             {game.sampleQuestions.map((question, idx) => (
-              <div 
+              <div
                 key={idx}
                 className="p-3.5 rounded-xl bg-white border border-rose-100 text-xs sm:text-sm font-medium text-gray-800 flex items-start gap-2.5 shadow-2xs"
               >
@@ -122,8 +176,11 @@ export const GameModal: React.FC<GameModalProps> = ({ game, onClose }) => {
         <div className="space-y-2">
           <button
             onClick={() => {
-              alert(`Starting ${game.title}! Full interactive gameplay module will be enabled in the next update.`);
-              onClose();
+              if (canPlay) {
+                setIsPlaying(true);
+              } else {
+                alert(`${game.title} is coming soon! Try Would You Rather, Truth or Dare or This or That for now.`);
+              }
             }}
             className="w-full py-3.5 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold text-sm shadow-md shadow-rose-200 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2"
           >

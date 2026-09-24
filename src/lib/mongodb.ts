@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
+
 const options = {};
 
 let client: MongoClient | null = null;
@@ -15,12 +16,29 @@ if (uri) {
 
     if (!globalWithMongo._mongoClientPromise) {
       client = new MongoClient(uri, options);
-      globalWithMongo._mongoClientPromise = client.connect();
+
+      globalWithMongo._mongoClientPromise = client.connect()
+        .then((connectedClient) => {
+          console.log('✅ MongoDB connected successfully');
+          return connectedClient;
+        })
+        .catch((error) => {
+          console.error('❌ MongoDB connection failed:', error);
+          throw error;
+        });
     }
     clientPromise = globalWithMongo._mongoClientPromise;
   } else {
     client = new MongoClient(uri, options);
-    clientPromise = client.connect();
+    clientPromise = client.connect()
+      .then(() => {
+        console.log("MongoDB connected successfully");
+        return client!;
+      })
+      .catch((error) => {
+        console.error("MongoDB connection failed:", error);
+        throw error;
+      });
   }
 }
 
@@ -72,7 +90,7 @@ export async function incrementFreeSpin(deviceId: string): Promise<UserMemoryRec
       const db = cli.db('couplegames');
       const result = await db.collection('users').findOneAndUpdate(
         { deviceId },
-        { 
+        {
           $inc: { freeSpinsUsed: 1 },
           $setOnInsert: { paidUntil: 0, createdAt: Date.now() }
         },
@@ -104,11 +122,11 @@ export async function activate24HourPass(deviceId: string): Promise<UserMemoryRe
     try {
       const cli = await clientPromise;
       const db = cli.db('couplegames');
-      
+
       // Update User paidUntil
       await db.collection('users').updateOne(
         { deviceId },
-        { 
+        {
           $set: { paidUntil },
           $setOnInsert: { freeSpinsUsed: 3, createdAt: Date.now() }
         },

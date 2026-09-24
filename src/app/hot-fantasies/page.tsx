@@ -63,12 +63,12 @@ export default function HotFantasiesPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-900">
-      
+
       {/* Top Header Navigation */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-rose-100 px-4 py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          
-          <Link 
+
+          <Link
             href="/"
             className="inline-flex items-center gap-2 text-xs font-semibold text-gray-600 hover:text-rose-600 transition-colors"
           >
@@ -100,32 +100,30 @@ export default function HotFantasiesPage() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8 space-y-10">
-        
+
         {/* User Status Bar Header (Pink Border + White Text Card as requested) */}
-        <div className="bg-gradient-to-r from-rose-950 via-gray-950 to-rose-950 border-2 border-pink-500 rounded-3xl p-5 sm:p-6 shadow-xl shadow-rose-950/40 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
-          
-          <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-rose-900/80 border border-pink-400 flex items-center justify-center text-pink-300 shrink-0 shadow-sm">
-              {userStatus.hasActivePass ? <Unlock className="w-6 h-6 text-emerald-400" /> : <Zap className="w-6 h-6 text-amber-400 fill-amber-400" />}
+        <div className="bg-white border-2 border-pink-500 rounded-3xl p-4 sm:p-5 shadow-lg shadow-pink-100 text-gray-900 flex flex-col sm:flex-row items-center justify-between gap-4">
+
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-pink-50 border border-pink-300 flex items-center justify-center shrink-0">
+              {userStatus.hasActivePass ? <Unlock className="w-5 h-5 text-emerald-500" /> : <Zap className="w-5 h-5 text-amber-500 fill-amber-500" />}
             </div>
-            <div>
-              <span className="text-[10px] uppercase tracking-wider font-extrabold text-pink-300 block">
-                1-Click Device Access Status
-              </span>
-              <h1 className="text-xl font-extrabold text-white">
-                {userStatus.hasActivePass ? (
-                  <span className="text-emerald-400 flex items-center gap-1.5">
-                    <ShieldCheck className="w-5 h-5 inline" /> 24-Hour Pass Active!
-                  </span>
-                ) : (
-                  <span className="text-white">Free Trial Access</span>
-                )}
-              </h1>
-              <p className="text-xs text-white font-medium mt-0.5 opacity-90">
-                {userStatus.hasActivePass 
+
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+
+              {userStatus.hasActivePass ? (
+                <span className="text-base font-extrabold text-emerald-600 flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4" /> 24-Hour Pass Active!
+                </span>
+              ) : (
+                <span className="text-base font-extrabold text-gray-900">Free Trial Access</span>
+              )}
+
+              <span className="text-xs text-gray-600 font-medium">
+                {userStatus.hasActivePass
                   ? getRemainingTimeString(userStatus.passExpiresAt)
                   : `Free Spins Left: ${userStatus.freeSpinsLeft} of 3`}
-              </p>
+              </span>
             </div>
           </div>
 
@@ -152,9 +150,9 @@ export default function HotFantasiesPage() {
             <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
               Fantaspin <span className="font-serif italic font-normal text-rose-500">🎰</span>
             </h2>
-            <p className="text-xs sm:text-sm text-gray-600 mt-1">
+            {/* <p className="text-xs sm:text-sm text-gray-600 mt-1">
               Spin the fantasy reel! Watch the couple images rush upwards fast and land on an intimate scenario for two.
-            </p>
+            </p> */}
           </div>
 
           {/* Fantaspin Component */}
@@ -175,7 +173,7 @@ export default function HotFantasiesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {spicyGames.map((game) => (
-              <div 
+              <div
                 key={game.id}
                 className="bg-white border-2 border-rose-100 hover:border-rose-300 rounded-2xl p-5 flex flex-col justify-between shadow-md shadow-rose-100/40 hover:shadow-xl transition-all"
               >
