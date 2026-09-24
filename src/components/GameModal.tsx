@@ -9,6 +9,7 @@ import { FantaspinGame } from './FantaspinGame';
 import { InteractivePlayground } from './InteractivePlayground';
 import { X, Play, HelpCircle, Check, Flame } from 'lucide-react';
 import { MidnightDiceGame } from './MidnightDiceGame';
+import { sendGAEvent } from '@next/third-parties/google';
 
 interface GameModalProps {
   game: GameItem | null;
@@ -37,9 +38,10 @@ export const GameModal: React.FC<GameModalProps> = ({ game, onClose }) => {
   const prompts = GAME_PROMPTS[game.id];
   const isDice = game.id === 'midnight-dice';
   const canPlay = !!playType || isDice || (prompts && prompts.length > 0);
-
+  
   // Play mode: show the actual game
   if (isPlaying && canPlay) {
+    sendGAEvent('event', 'game_start', { game_id: game.id });
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
         <div className="absolute inset-0" onClick={onClose} />

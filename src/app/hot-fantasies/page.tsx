@@ -101,7 +101,7 @@ export default function HotFantasiesPage() {
       {/* Main Content Area */}
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8 space-y-10">
 
-        {/* User Status Bar Header (Pink Border + White Text Card as requested) */}
+              {/* User Status Bar — disabled while the site is free
         <div className="bg-white border-2 border-pink-500 rounded-3xl p-4 sm:p-5 shadow-lg shadow-pink-100 text-gray-900 flex flex-col sm:flex-row items-center justify-between gap-4">
 
           <div className="flex items-center gap-3">
@@ -127,7 +127,6 @@ export default function HotFantasiesPage() {
             </div>
           </div>
 
-          {/* Action Badge / Button */}
           {!userStatus.hasActivePass && (
             <button
               onClick={() => setIsPaymentModalOpen(true)}
@@ -139,6 +138,7 @@ export default function HotFantasiesPage() {
           )}
 
         </div>
+        */}
 
         {/* FEATURED GAME: Fantaspin */}
         <section className="space-y-4">
@@ -147,9 +147,6 @@ export default function HotFantasiesPage() {
               <Flame className="w-4 h-4 text-rose-500 fill-rose-500 animate-pulse" />
               <span>Featured 18+ Game</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
-              Fantaspin <span className="font-serif italic font-normal text-rose-500">🎰</span>
-            </h2>
             {/* <p className="text-xs sm:text-sm text-gray-600 mt-1">
               Spin the fantasy reel! Watch the couple images rush upwards fast and land on an intimate scenario for two.
             </p> */}

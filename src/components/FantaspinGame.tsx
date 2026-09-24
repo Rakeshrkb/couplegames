@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import { FANTASPIN_ITEMS } from '@/data/gamesData';
 import { FantaspinItem } from '@/types/game';
 import { Flame, RefreshCw, Trophy, X } from 'lucide-react';
+import { sendGAEvent } from '@next/third-parties/google';
 
 interface FantaspinGameProps {
   onClose?: () => void;
@@ -101,17 +102,22 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
     }
   };
 
-  const handleSpin = async () => {
+  // const handleSpin = async () => {
+  //   if (isSpinning) return;
+
+  //   // Lock the button while we check, so double clicks don't fire two requests
+  //   setIsSpinning(true);
+
+  //   const allowed = await checkSpinAllowed();
+  //   if (!allowed) {
+  //     setIsSpinning(false);
+  //     return;
+  //   }
+  const handleSpin = () => {
     if (isSpinning) return;
-
-    // Lock the button while we check, so double clicks don't fire two requests
     setIsSpinning(true);
-
-    const allowed = await checkSpinAllowed();
-    if (!allowed) {
-      setIsSpinning(false);
-      return;
-    }
+    sendGAEvent('event', 'fantaspin_spin');
+    // till this replace with upper commented code to implement backend check
 
     setShowResult(false);
     setSelectedItem(null);
@@ -146,9 +152,12 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
     requestAnimationFrame(animateSpin);
   };
 
+
+
+
   return (
     <div className="relative w-full max-w-2xl mx-auto bg-gradient-to-b from-white via-rose-50/60 to-white rounded-3xl p-6 sm:p-8 text-gray-900 border-2 border-rose-300 shadow-2xl shadow-rose-100/80 overflow-hidden">
-      
+
       {/* Background Soft Pink Glow Orbs */}
       <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-72 h-72 bg-rose-200/40 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-72 h-72 bg-pink-200/40 rounded-full blur-3xl pointer-events-none" />
@@ -159,7 +168,7 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
           <Flame className="w-4 h-4 text-rose-500 fill-rose-500 animate-pulse" />
           {/* <span>18+ Wild & Spicy Couple Reel</span> */}
         </div>
-        
+
         <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
           Fantaspin <span className="font-serif italic font-normal text-rose-500">🎰</span>
         </h2>
@@ -170,7 +179,7 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
 
       {/* SLOT MACHINE REEL CONTAINER */}
       <div className="relative z-10 max-w-md mx-auto my-6">
-        
+
         {/* Neon Gold Frame Pointer */}
         <div className="absolute inset-y-0 left-0 right-0 pointer-events-none z-20 flex items-center justify-between px-2">
           <div className="w-4 h-12 bg-gradient-to-r from-amber-400 to-rose-500 rounded-r-lg shadow-lg shadow-amber-400/60 animate-pulse" />
@@ -181,12 +190,12 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
         <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 h-[220px] border-4 border-amber-400/90 rounded-2xl pointer-events-none z-20 bg-rose-500/10 shadow-[0_0_25px_rgba(251,191,36,0.35)]" />
 
         {/* Reel Display Window (Dark contrast background for photos) */}
-        <div 
+        <div
           className="h-[220px] rounded-2xl bg-gray-950 border-4 border-rose-300 overflow-hidden relative shadow-inner"
           ref={reelRef}
         >
           {/* Vertical Scrolling Strip (only REEL_SIZE items rendered) */}
-          <div 
+          <div
             className="w-full flex flex-col"
             style={{
               transform: `translateY(-${scrollOffsetY}px)`,
@@ -194,14 +203,14 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
             }}
           >
             {reelItems.map((item, idx) => (
-              <div 
+              <div
                 key={`${item.id}-${idx}`}
                 className="h-[220px] w-full p-3 flex items-center gap-4 bg-gray-950 text-white border-b border-rose-950 shrink-0"
               >
                 {/* Couple Image Thumbnail */}
                 <div className="relative w-40 h-40 rounded-xl overflow-hidden border-2 border-rose-400/50 shrink-0 shadow-md">
-                  <img 
-                    src={item.image} 
+                  <img
+                    src={item.image}
                     alt={item.title}
                     className="w-full h-full object-cover"
                   />
@@ -234,11 +243,10 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
         <button
           onClick={handleSpin}
           disabled={isSpinning}
-          className={`w-full max-w-md py-4 rounded-full font-extrabold text-base tracking-wider shadow-lg transition-all duration-200 flex items-center justify-center gap-3 ${
-            isSpinning
+          className={`w-full max-w-md py-4 rounded-full font-extrabold text-base tracking-wider shadow-lg transition-all duration-200 flex items-center justify-center gap-3 ${isSpinning
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed border border-gray-300'
               : 'bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white shadow-rose-200 hover:shadow-xl hover:shadow-rose-300 hover:scale-105 active:scale-95 border border-rose-400/40'
-          }`}
+            }`}
         >
           <RefreshCw className={`w-5 h-5 ${isSpinning ? 'animate-spin' : ''}`} />
           <span>{isSpinning ? 'SPINNING THE REEL...' : 'SPIN THE WHEEL'}</span>
@@ -248,9 +256,9 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
       {/* LANDED RESULT POPUP MODAL (Blended White & Pink Card) */}
       {showResult && selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-md animate-fade-in">
-          
+
           <div className="relative w-full max-w-md bg-white rounded-3xl p-6 border-2 border-amber-400 text-gray-900 shadow-2xl text-center">
-            
+
             <button
               onClick={() => setShowResult(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center"
@@ -265,9 +273,9 @@ export const FantaspinGame: React.FC<FantaspinGameProps> = ({ onClose }) => {
 
             {/* Landed Image */}
             <div className="w-48 h-48 mx-auto rounded-2xl overflow-hidden border-4 border-amber-400 shadow-xl mb-4">
-              <img 
-                src={selectedItem.image} 
-                alt={selectedItem.title} 
+              <img
+                src={selectedItem.image}
+                alt={selectedItem.title}
                 className="w-full h-full object-cover"
               />
             </div>
