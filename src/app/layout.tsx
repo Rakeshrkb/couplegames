@@ -18,7 +18,7 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: 'couplegames — Free Games & Prompts for Couples',
-  description: 'Over 30+ free online games for couples. Would You Rather, Truth or Dare, Deep Questions, 36 Questions to Fall in Love, and date night starters. No sign-up needed.',
+  description: 'Over 20+ free online games for couples. Would You Rather, Truth or Dare, Deep Questions, 36 Questions to Fall in Love, and date night starters. No sign-up needed.',
   keywords: [
     'couple games',
     'games for couples',

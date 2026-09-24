@@ -1,4 +1,5 @@
 import { GameItem, CategoryInfo, TeaserQuestion, FantaspinItem } from '@/types/game';
+import { EXTRA_TEASER_QUESTIONS } from './extraTeasers';
 
 export const CATEGORIES: CategoryInfo[] = [
   {
@@ -92,7 +93,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'naughty-truth-or-dare-18-plus',
     icon: '💋',
     category: 'spicy',
-    questionCount: 20,
+    questionCount: 50,
     badge: '18+ Hot',
     description: 'Spicy, daring prompts crafted for adventurous couples looking to heat up date night.',
     shortDescription: 'Spicy 18+ truths & daring challenges.',
@@ -124,10 +125,10 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'would-you-rather-for-couples',
     icon: '🤔',
     category: 'party',
-    questionCount: 32,
+    questionCount: 100,
     badge: 'Popular',
     description: 'Pick your side between two funny, absurd, or deep romantic scenarios and ask your partner why!',
-    shortDescription: '150 dilemma scenarios built for couples.',
+    shortDescription: '32 dilemma scenarios built for couples.',
     sampleQuestions: [
       'Would you rather live in a cozy mountain cabin or a beach house by the ocean?',
       'Would you rather always know when your partner is lying or never be able to lie yourself?',
@@ -139,7 +140,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'truth-or-dare-for-couples',
     icon: '🔥',
     category: 'party',
-    questionCount: 90,
+    questionCount: 100,
     badge: 'Hot',
     description: 'Test your courage with sweet truths or playful dares designed specifically for two.',
     shortDescription: 'Revealing truths and spicy dares for date night.',
@@ -154,7 +155,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'this-or-that-for-couples',
     icon: '⚡',
     category: 'party',
-    questionCount: 21,
+    questionCount: 100,
     badge: 'Trending',
     description: 'Rapid-fire preferences! Test how synced up your tastes and romantic vibes really are.',
     shortDescription: '100 fast choices to compare tastes and habits.',
@@ -169,7 +170,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'never-have-i-ever-for-couples',
     icon: '🙈',
     category: 'party',
-    questionCount: 75,
+    questionCount: 50,
     badge: 'Popular',
     description: 'Uncover hilarious secrets and past stories you both haven’t shared yet.',
     shortDescription: 'Funny and surprising confessions for couples.',
@@ -184,7 +185,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'most-likely-to-for-couples',
     icon: '👆',
     category: 'party',
-    questionCount: 65,
+    questionCount: 50,
     description: 'Point fingers at count of three! Who is most likely to commit funny couple slip-ups?',
     shortDescription: 'Playful pointing game for couple habits.',
     sampleQuestions: [
@@ -212,7 +213,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'truth-or-drink-for-couples',
     icon: '🥂',
     category: 'party',
-    questionCount: 80,
+    questionCount: 50,
     badge: 'Hot',
     description: 'Answer spicy relationship questions or take a sip of your favorite date night drink.',
     shortDescription: 'Spicy questions or take a sip!',
@@ -229,7 +230,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'ice-breaker-questions-for-couples',
     icon: '🧊',
     category: 'fun',
-    questionCount: 60,
+    questionCount: 50,
     description: 'Lighthearted and effortless conversation starters perfect for new dates or cozy evenings.',
     shortDescription: 'Easy, fun questions to warm up any date.',
     sampleQuestions: [
@@ -243,7 +244,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: '5-second-rule-for-couples',
     icon: '⏱️',
     category: 'fun',
-    questionCount: 45,
+    questionCount: 50,
     badge: 'Trending',
     description: 'Name 3 things in 5 seconds under pressure! Fast, chaotic, and hilarious.',
     shortDescription: 'Fast-paced trivia challenge for two.',
@@ -258,7 +259,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'funny-questions-for-couples',
     icon: '😂',
     category: 'fun',
-    questionCount: 70,
+    questionCount: 50,
     description: 'Guaranteed laughs with silly hypotheticals and quirky relationship scenarios.',
     shortDescription: 'Silly, hilarious prompts for instant smiles.',
     sampleQuestions: [
@@ -272,7 +273,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'couple-trivia-questions',
     icon: '🧠',
     category: 'fun',
-    questionCount: 60,
+    questionCount: 50,
     badge: 'Popular',
     description: 'Put your memory to the test with questions about your relationship milestones.',
     shortDescription: 'Test how well you remember your history.',
@@ -287,7 +288,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'hot-seat-questions-for-couples',
     icon: '🔥',
     category: 'fun',
-    questionCount: 55,
+    questionCount: 50,
     description: 'One partner is in the hot seat answering rapid questions while the other watches!',
     shortDescription: 'Rapid Q&A under the spot-light.',
     sampleQuestions: [
@@ -318,7 +319,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'pillow-talk-questions-for-couples',
     icon: '🌙',
     category: 'conversation',
-    questionCount: 40,
+    questionCount: 50,
     badge: 'Romantic',
     description: 'Cozy, gentle late-night questions to share right before falling asleep.',
     shortDescription: 'Cozy, tender late-night conversation.',
@@ -335,7 +336,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: '36-questions-to-fall-in-love',
     icon: '💘',
     category: 'romance',
-    questionCount: 36,
+    questionCount: 50,
     badge: 'Romantic',
     description: 'The famous psychological study deck designed to build intense vulnerability and deep love.',
     shortDescription: 'The classic science-backed love study deck.',
@@ -350,7 +351,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'love-language-quiz-for-couples',
     icon: '💝',
     category: 'romance',
-    questionCount: 30,
+    questionCount: 50,
     badge: 'Popular',
     description: 'Discover how you both best express and receive love (Words, Touch, Gifts, Time, Services).',
     shortDescription: 'Identify how you both feel most cherished.',
@@ -367,7 +368,7 @@ export const GAMES_DATA: GameItem[] = [
     slug: 'long-distance-relationship-games',
     icon: '🌍',
     category: 'lifestyle',
-    questionCount: 55,
+    questionCount: 50,
     badge: 'Popular',
     description: 'Perfect for video call date nights! Stay close across miles with virtual prompts.',
     shortDescription: 'Designed for video calls & virtual dates.',
@@ -392,7 +393,7 @@ export const GAMES_DATA: GameItem[] = [
   }
 ];
 
-export const HERO_TEASER_QUESTIONS: TeaserQuestion[] = [
+const BASE_TEASER_QUESTIONS: TeaserQuestion[] = [
   {
     id: 'wyr-1',
     type: 'would_you_rather',
@@ -1194,4 +1195,8 @@ export const HERO_TEASER_QUESTIONS: TeaserQuestion[] = [
       votesB: 44
     }
   },
+];
+export const HERO_TEASER_QUESTIONS: TeaserQuestion[] = [
+  ...BASE_TEASER_QUESTIONS,
+  ...EXTRA_TEASER_QUESTIONS,
 ];

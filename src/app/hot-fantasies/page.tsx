@@ -9,6 +9,7 @@ import { GAMES_DATA } from '@/data/gamesData';
 import { GameItem } from '@/types/game';
 import { Flame, Lock, Unlock, ArrowLeft, ShieldCheck, Zap } from 'lucide-react';
 import { GameModal } from '@/components/GameModal';
+import { AgeGate } from '@/components/AgeGate';
 
 export default function HotFantasiesPage() {
   const [selectedGame, setSelectedGame] = useState<GameItem | null>(null);
@@ -64,6 +65,7 @@ export default function HotFantasiesPage() {
   const spicyGames = GAMES_DATA.filter(g => g.category === 'spicy');
 
   return (
+    <AgeGate>
     <div className="min-h-screen flex flex-col bg-white text-gray-900">
 
       {/* Top Header Navigation */}
@@ -213,5 +215,6 @@ export default function HotFantasiesPage() {
       />
 
     </div>
+    </AgeGate>
   );
 }
