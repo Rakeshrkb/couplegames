@@ -1,216 +1,402 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { GoogleSignInButton } from '@/components/GoogleSignInButton';
 import Link from 'next/link';
-import { getOrCreateDeviceId } from '@/lib/auth';
-// import { FantaspinGame } from '@/components/FantaspinGame';
-import { PaymentModal } from '@/components/PaymentModal';
+import {
+  ArrowLeft,
+  ArrowRight,
+  Heart,
+  Sparkles,
+  Lock,
+  Unlock,
+  Check,
+  Clock,
+  Infinity as InfinityIcon,
+  ShieldCheck,
+  Smartphone,
+  ChevronDown,
+} from 'lucide-react';
 import { GAMES_DATA } from '@/data/gamesData';
-import { GameItem } from '@/types/game';
-import { Flame, Lock, Unlock, ArrowLeft, ShieldCheck, Zap } from 'lucide-react';
-import { AgeGate } from '@/components/AgeGate';
+import { PaymentModal } from '@/components/PaymentModal';
+import { useSession } from 'next-auth/react';
+import type { PublicAccount } from '@/lib/accounts';
 
-export default function HotFantasiesPage() {
-  const [deviceId, setDeviceId] = useState<string>('');
-  const [userStatus, setUserStatus] = useState<{
-    freeSpinsLeft: number;
-    freeSpinsUsed: number;
-    hasActivePass: boolean;
-    passExpiresAt: number;
-    isPaywallActive: boolean;
-  }>({
-    freeSpinsLeft: 3,
-    freeSpinsUsed: 0,
-    hasActivePass: false,
-    passExpiresAt: 0,
-    isPaywallActive: false,
-  });
+// Games already built for the pack. Works whether the category is still 'spicy' or renamed
+// to 'couples'. Fantaspin is left out because it is commented out.
+const PACK_CATEGORIES: string[] = ['couples', 'spicy'];
+const PACK_GAMES = GAMES_DATA.filter(
+  (g) => PACK_CATEGORIES.includes(g.category as string) && g.slug !== 'fantaspin'
+);
 
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+// Planned pack games, shown as "Coming soon" so the pack feels full
+const COMING_SOON = [
+  { icon: '🗺️', title: 'Love Maps', text: 'How well do you really know their world?' },
+  { icon: '📱', title: 'Two-Phone Match', text: 'Answer privately. Only your matches are revealed.' },
+  { icon: '🔮', title: 'Future Us', text: 'Dreams, goals and the life you want together.' },
+  { icon: '📸', title: 'Memory Lane', text: 'Relive your story, from the very first day.' },
+  { icon: '🫶', title: 'Relationship Check-in', text: 'A gentle monthly talk about how you both feel.' },
+  { icon: '📅', title: '30-Day Challenge', text: 'One small, sweet task a day for a month.' },
+];
 
-  // Initialize 1-click device auth & fetch status from MongoDB API
+const STEPS = [
+  { icon: Sparkles, title: 'Pick a game', text: 'Choose from deeper, couples-only games made to bring you closer.' },
+  { icon: Smartphone, title: 'Play together', text: 'On one phone side by side, or over a video call.' },
+  { icon: Heart, title: 'Feel closer', text: 'Talk about the things you never thought to ask.' },
+];
+
+const FAQ = [
+  {
+    q: 'What do I get with the Couples Pack?',
+    a: 'Every Couples Corner game, plus all new pack games we add. The free games on the site stay free.',
+  },
+  {
+    q: 'Is it a subscription?',
+    a: 'No. It is a one-time payment: ₹29 for 24 hours, or ₹39 for lifetime access. Nothing renews automatically.',
+  },
+  {
+    q: 'Can we use it on both our phones?',
+    a: 'Yes. Sign in with Google to use your pack on any device. A quick account works only in the browser where you bought it.',
+  },
+  {
+    q: 'What if my payment goes through but nothing unlocks?',
+    a: 'Email us with your order ID and we will unlock it or refund you. See our Refund Policy for details.',
+  },
+];
+
+export default function CouplesCornerPage() {
+  const [account, setAccount] = useState<PublicAccount | null>(null);
+  const [payOpen, setPayOpen] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const { data: session } = useSession();
+
   useEffect(() => {
-    const id = getOrCreateDeviceId();
-    setDeviceId(id);
-    fetchUserStatus(id);
+    fetch('/api/account/me', { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((d) => setAccount(d.account))
+      .catch(() => setAccount(null));
   }, []);
 
-  const fetchUserStatus = async (id: string) => {
-    try {
-      const res = await fetch(`/api/user/status?deviceId=${id}`);
-      const data = await res.json();
-      setUserStatus(data);
-    } catch (err) {
-      console.warn('Error fetching user status:', err);
-    }
-  };
-
-  const handlePaymentSuccess = () => {
-    if (deviceId) {
-      fetchUserStatus(deviceId);
-    }
-  };
-
-  // Helper to calculate hours & minutes remaining on 24h pass
-  const getRemainingTimeString = (expiry: number) => {
-    const diff = expiry - Date.now();
-    if (diff <= 0) return 'Expired';
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    return `${hours}h ${mins}m remaining`;
-  };
-
-  const spicyGames = GAMES_DATA.filter(g => g.category === 'couples');
+  const hasPass = !!account?.hasPass;
+  const totalGames = PACK_GAMES.length + COMING_SOON.length;
 
   return (
-    <AgeGate>
-      <div className="min-h-screen flex flex-col bg-white text-gray-900">
+    <div className="min-h-screen flex flex-col bg-white text-gray-900">
+      {/* ───────────── Header ───────────── */}
+            <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-rose-100 px-4 py-3">
+        <div className="max-w-6xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+          <Link
+            href="/"
+            className="justify-self-start inline-flex items-center gap-2 text-xs font-semibold text-gray-600 hover:text-rose-600 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4 text-rose-500" />
+            <span className="hidden sm:inline">Back to all games</span>
+          </Link>
 
-        {/* Top Header Navigation */}
-        <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-rose-100 px-4 py-3">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-xs font-semibold text-gray-600 hover:text-rose-600 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4 text-rose-500" />
-              <span>Back to Main Homepage</span>
-            </Link>
-
-            {/* Logo Badge */}
-            <div className="flex items-center gap-2">
-              <span className="w-8 h-8 rounded-xl bg-gradient-to-tr from-rose-500 to-pink-500 flex items-center justify-center shadow-md shadow-rose-200">
-                <Flame className="w-4 h-4 fill-white text-white" />
-              </span>
-              <span className="text-lg font-bold tracking-tight text-gray-900">
-                Hot <span className="font-serif italic text-rose-500">Fantasies</span> 🔞
-              </span>
-            </div>
-
-            {/* Unlock 24h Pass Button */}
-            <button
-              onClick={() => setIsPaymentModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs font-bold shadow-sm shadow-rose-200 hover:shadow-md hover:scale-105 transition-all"
-            >
-              <Unlock className="w-3.5 h-3.5" />
-              <span>Unlock Couples Pack (from ₹29)</span>
-            </button>
-
-          </div>
-        </header>
-
-        {/* Main Content Area */}
-        <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8 space-y-10">
-
-          {/* User Status Bar — disabled while the site is free
-        <div className="bg-white border-2 border-pink-500 rounded-3xl p-4 sm:p-5 shadow-lg shadow-pink-100 text-gray-900 flex flex-col sm:flex-row items-center justify-between gap-4">
-
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-pink-50 border border-pink-300 flex items-center justify-center shrink-0">
-              {userStatus.hasActivePass ? <Unlock className="w-5 h-5 text-emerald-500" /> : <Zap className="w-5 h-5 text-amber-500 fill-amber-500" />}
-            </div>
-
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-
-              {userStatus.hasActivePass ? (
-                <span className="text-base font-extrabold text-emerald-600 flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4" /> 24-Hour Pass Active!
-                </span>
-              ) : (
-                <span className="text-base font-extrabold text-gray-900">Free Trial Access</span>
-              )}
-
-              <span className="text-xs text-gray-600 font-medium">
-                {userStatus.hasActivePass
-                  ? getRemainingTimeString(userStatus.passExpiresAt)
-                  : `Free Spins Left: ${userStatus.freeSpinsLeft} of 3`}
-              </span>
-            </div>
+          <div className="flex items-center gap-2">
+            <span className="w-8 h-8 rounded-xl bg-gradient-to-tr from-rose-500 to-pink-500 flex items-center justify-center shadow-md shadow-rose-200">
+              <Heart className="w-4 h-4 fill-white text-white" />
+            </span>
+            <span className="text-lg font-bold tracking-tight text-gray-900 whitespace-nowrap">
+              Couples <span className="font-serif italic text-rose-500">Corner</span>
+            </span>
           </div>
 
-          {!userStatus.hasActivePass && (
-            <button
-              onClick={() => setIsPaymentModalOpen(true)}
-              className="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white font-extrabold text-xs shadow-md shadow-pink-900/50 hover:shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 border border-pink-400/40"
-            >
-              <Lock className="w-4 h-4" />
-              <span>Unlock 24h Full Access (₹25 INR)</span>
-            </button>
-          )}
+          {/* Right side: one wrapper for every state, pinned to the right */}
+          <div className="justify-self-end flex items-center gap-2 [&_button]:!w-auto [&_button]:!px-4 [&_button]:!py-2 [&_button]:!text-xs">
+            {hasPass ? (
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold">
+                <Unlock className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Pack unlocked</span>
+              </span>
+            ) : session?.user ? (
+              <div className="relative group shrink-0">
+                {session.user.image ? (
+                  <img
+                    src={session.user.image}
+                    alt={session.user.name ?? 'Account'}
+                    referrerPolicy="no-referrer"
+                    className="w-9 h-9 rounded-full border-2 border-rose-200 hover:border-rose-400 transition-colors cursor-pointer"
+                  />
+                ) : (
+                  <span className="w-9 h-9 rounded-full bg-rose-500 text-white flex items-center justify-center text-sm font-bold cursor-pointer">
+                    {session.user.name?.[0] ?? 'U'}
+                  </span>
+                )}
 
-        </div>
-        */}
-
-          {/* FEATURED GAME: Fantaspin */}
-          <section className="space-y-4">
-            <div className="text-center max-w-2xl mx-auto">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-100 border border-rose-200 text-rose-700 text-xs font-extrabold uppercase tracking-widest mb-2 shadow-2xs">
-                <Flame className="w-4 h-4 text-rose-500 fill-rose-500 animate-pulse" />
-                <span>💞 Featured Couples Game</span>
+                {/* Hover card */}
+                <div className="pointer-events-none absolute right-0 top-full mt-2 w-max max-w-[220px] rounded-xl bg-gray-900 text-white px-3 py-2 text-xs shadow-lg opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all z-50">
+                  <p className="font-bold truncate">{session.user.name}</p>
+                  {session.user.email && <p className="text-white/60 truncate">{session.user.email}</p>}
+                </div>
               </div>
-              {/* <p className="text-xs sm:text-sm text-gray-600 mt-1">
-              Spin the fantasy reel! Watch the couple images rush upwards fast and land on an intimate scenario for two.
-            </p> */}
-            </div>
+            ) : account ? (
+              <>
+                <span className="hidden sm:inline-flex items-center px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold">
+                  Quick account
+                </span>
+                <GoogleSignInButton callbackUrl="/couples-corner" />
+              </>
+            ) : (
+              <GoogleSignInButton callbackUrl="/couples-corner" />
+            )}
+          </div>
+        </div>
+      </header>
 
-            {/* Fantaspin Component */}
-            {/* <FantaspinGame /> */}
-          </section>
+      <main className="flex-1">
+        {/* ───────────── Hero ───────────── */}
+        <section className="relative overflow-hidden bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-600 text-white">
+          <div className="absolute -top-24 -left-24 w-80 h-80 bg-white/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-32 -right-16 w-96 h-96 bg-fuchsia-300/30 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-10 right-[15%] text-6xl opacity-20 rotate-12 pointer-events-none select-none">💞</div>
+          <div className="absolute bottom-10 left-[10%] text-5xl opacity-20 -rotate-12 pointer-events-none select-none">💬</div>
 
-          {/* OTHER SPICY 18+ GAMES GRID */}
-          <section className="space-y-4 pt-6">
-            <div className="flex items-center justify-between border-b border-rose-200 pb-3">
-              <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <Flame className="w-5 h-5 text-rose-500 fill-rose-500" />
-                <span>Couples Games</span>
-              </h3>
-              <span className="text-xs text-rose-600 font-semibold bg-rose-50 px-2.5 py-1 rounded-full border border-rose-100">
-                {spicyGames.length} games available
+          <div className="relative max-w-4xl mx-auto px-4 py-16 sm:py-24 text-center">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/30 text-xs font-extrabold uppercase tracking-widest backdrop-blur-sm">
+              <Sparkles className="w-3.5 h-3.5" />
+              The Couples Pack
+            </span>
+
+            <h1 className="mt-6 text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.1]">
+              Know each other,{' '}
+              <span className="font-serif italic font-normal underline decoration-white/40 underline-offset-8">
+                deeper.
               </span>
+            </h1>
+
+            <p className="mt-5 text-base sm:text-lg text-white/90 max-w-2xl mx-auto leading-relaxed">
+              Games made just for couples. Ask the questions you never thought to ask, discover what you
+              have in common and fall for each other all over again.
+            </p>
+
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+              {hasPass ? (
+                <a
+                  href="#games"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-white text-rose-600 font-extrabold text-sm shadow-xl hover:scale-105 active:scale-95 transition-all"
+                >
+                  Start playing <ArrowRight className="w-4 h-4" />
+                </a>
+              ) : (
+                <button
+                  onClick={() => setPayOpen(true)}
+                  className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-white text-rose-600 font-extrabold text-sm shadow-xl hover:scale-105 active:scale-95 transition-all"
+                >
+                  <Lock className="w-4 h-4" />
+                  Unlock lifetime for ₹39
+                </button>
+              )}
+              <a
+                href="#games"
+                className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-white/10 border-2 border-white/40 text-white font-bold text-sm hover:bg-white/20 transition-all"
+              >
+                See what&apos;s inside
+              </a>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {spicyGames.map((game) => (
-                <div
-                  key={game.id}
-                  className="bg-white border-2 border-rose-100 hover:border-rose-300 rounded-2xl p-5 flex flex-col justify-between shadow-md shadow-rose-100/40 hover:shadow-xl transition-all"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-3">
-                      <span className="text-3xl">{game.icon}</span>
-                      <span className="px-2.5 py-1 rounded-full bg-rose-100 text-rose-700 text-[10px] font-extrabold border border-rose-200 uppercase tracking-wider">
-                        {game.badge}
-                      </span>
-                    </div>
-                    <h4 className="text-lg font-bold text-gray-900 mb-1">{game.title}</h4>
-                    <p className="text-xs text-gray-500 leading-relaxed">{game.description}</p>
-                  </div>
-
-                  <div className="mt-4 pt-3 border-t border-rose-50 flex items-center justify-between text-xs">
-                    <span className="text-rose-600 font-semibold">{game.questionCount} prompts</span>
-                    <Link
-                      href={`/couples-corner/${game.slug}`}
-                      className="px-4 py-2 rounded-full bg-rose-500 text-white font-bold hover:bg-rose-600 transition-colors shadow-2xs"
-                    >
-                      Play Game
-                    </Link>
-                  </div>
+            <div className="mt-10 grid grid-cols-3 gap-3 max-w-lg mx-auto">
+              {[
+                { value: `${totalGames}+`, label: 'couples games' },
+                { value: '₹39', label: 'lifetime access' },
+                { value: '0', label: 'subscriptions' },
+              ].map((s) => (
+                <div key={s.label} className="rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm py-3">
+                  <div className="text-2xl font-extrabold">{s.value}</div>
+                  <div className="text-[11px] text-white/80 font-medium">{s.label}</div>
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* ───────────── Games in the pack ───────────── */}
+        <section id="games" className="max-w-6xl mx-auto px-4 py-16 scroll-mt-20">
+          <div className="text-center mb-10">
+            <p className="text-xs font-extrabold uppercase tracking-widest text-rose-500 mb-2">Inside the pack</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Games that bring you closer</h2>
+            <p className="text-sm text-gray-500 mt-2">New games are added to the pack regularly, free for lifetime members.</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {/* Playable pack games */}
+            {PACK_GAMES.map((game) => (
+              <Link
+                key={game.id}
+                href={`/couples-corner/${game.slug}`}
+                className="group relative overflow-hidden rounded-3xl bg-white border-2 border-rose-100 hover:border-rose-300 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all"
+              >
+                <div className="h-28 bg-gradient-to-br from-rose-100 via-pink-50 to-fuchsia-100 flex items-center justify-center text-6xl">
+                  <span className="group-hover:scale-110 transition-transform">{game.icon}</span>
+                </div>
+                <div className="p-5">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-rose-600 transition-colors">{game.title}</h3>
+                    <span className="shrink-0 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-extrabold uppercase tracking-wider">
+                      Play now
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500 leading-relaxed">{game.shortDescription}</p>
+                  <div className="mt-4 flex items-center justify-between text-xs">
+                    <span className="font-semibold text-rose-600">{game.questionCount} prompts</span>
+                    <span className="inline-flex items-center gap-1 font-bold text-gray-700 group-hover:text-rose-600">
+                      Play <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+
+            {/* Coming soon */}
+            {COMING_SOON.map((g) => (
+              <div
+                key={g.title}
+                className="relative overflow-hidden rounded-3xl bg-white border-2 border-dashed border-rose-200"
+              >
+                <div className="h-28 bg-gradient-to-br from-gray-50 to-rose-50 flex items-center justify-center text-6xl grayscale-[40%] opacity-80">
+                  {g.icon}
+                </div>
+                <div className="p-5">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <h3 className="text-lg font-bold text-gray-700">{g.title}</h3>
+                    <span className="shrink-0 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-extrabold uppercase tracking-wider">
+                      Coming soon
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500 leading-relaxed">{g.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ───────────── How it works ───────────── */}
+        <section className="bg-rose-50/60 border-y border-rose-100">
+          <div className="max-w-5xl mx-auto px-4 py-16">
+            <h2 className="text-center text-2xl sm:text-3xl font-extrabold text-gray-900 mb-10">How it works</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {STEPS.map((s, i) => (
+                <div key={s.title} className="relative bg-white rounded-3xl p-6 border border-rose-100 shadow-sm text-center">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs font-extrabold flex items-center justify-center shadow-md">
+                    {i + 1}
+                  </span>
+                  <s.icon className="w-8 h-8 text-rose-500 mx-auto mt-2 mb-3" />
+                  <h3 className="font-bold text-gray-900">{s.title}</h3>
+                  <p className="text-sm text-gray-500 mt-1 leading-relaxed">{s.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ───────────── Pricing ───────────── */}
+        {!hasPass && (
+          <section id="pricing" className="max-w-4xl mx-auto px-4 py-16 scroll-mt-20">
+            <div className="text-center mb-10">
+              <p className="text-xs font-extrabold uppercase tracking-widest text-rose-500 mb-2">Simple pricing</p>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Less than a cup of coffee</h2>
+              <p className="text-sm text-gray-500 mt-2">One-time payment. No subscription. Pay with UPI, cards or net banking.</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {/* 24 hours */}
+              <div className="rounded-3xl border-2 border-rose-100 bg-white p-7 flex flex-col">
+                <Clock className="w-7 h-7 text-rose-400 mb-3" />
+                <h3 className="text-sm font-extrabold uppercase tracking-wider text-gray-500">24 Hours</h3>
+                <div className="mt-1 text-5xl font-extrabold text-gray-900">₹29</div>
+                <p className="text-sm text-gray-500 mt-2">Perfect for one special date night.</p>
+                <ul className="mt-5 space-y-2 text-sm text-gray-700 flex-1">
+                  {['All pack games for 24 hours', 'Play on phone or laptop'].map((f) => (
+                    <li key={f} className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-500 shrink-0" /> {f}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => setPayOpen(true)}
+                  className="mt-6 w-full py-3.5 rounded-full border-2 border-rose-300 text-rose-600 font-bold text-sm hover:bg-rose-50 transition-colors"
+                >
+                  Get 24 hours
+                </button>
+              </div>
+
+              {/* Lifetime */}
+              <div className="relative rounded-3xl p-7 flex flex-col text-white bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-600 shadow-2xl shadow-rose-200 sm:scale-[1.03]">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white text-rose-600 text-[10px] font-extrabold uppercase tracking-widest shadow-md">
+                  Best value · Just ₹10 more
+                </span>
+                <InfinityIcon className="w-7 h-7 text-white mb-3" />
+                <h3 className="text-sm font-extrabold uppercase tracking-wider text-white/80">Lifetime</h3>
+                <div className="mt-1 text-5xl font-extrabold">₹39</div>
+                <p className="text-sm text-white/85 mt-2">Yours forever, including every new game.</p>
+                <ul className="mt-5 space-y-2 text-sm flex-1">
+                  {['All pack games, forever', 'Every future game included', 'Works on any device with Google sign-in'].map((f) => (
+                    <li key={f} className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-white shrink-0" /> {f}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => setPayOpen(true)}
+                  className="mt-6 w-full py-3.5 rounded-full bg-white text-rose-600 font-extrabold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+                >
+                  Unlock lifetime
+                </button>
+              </div>
+            </div>
+
+            <p className="mt-6 text-center text-xs text-gray-400 flex items-center justify-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-emerald-500" />
+              Secure checkout by PhonePe ·{' '}
+              <Link href="/refund-policy" className="underline hover:text-rose-600">Refund Policy</Link>
+            </p>
           </section>
+        )}
 
-        </main>
+        {/* ───────────── FAQ ───────────── */}
+        <section className="max-w-3xl mx-auto px-4 pb-16">
+          <h2 className="text-center text-2xl sm:text-3xl font-extrabold text-gray-900 mb-8">Questions</h2>
+          <div className="space-y-3">
+            {FAQ.map((item, i) => {
+              const open = openFaq === i;
+              return (
+                <div key={item.q} className="rounded-2xl border-2 border-rose-100 bg-white overflow-hidden">
+                  <button
+                    onClick={() => setOpenFaq(open ? null : i)}
+                    className="w-full flex items-center justify-between gap-4 p-5 text-left font-bold text-gray-900 hover:text-rose-600"
+                  >
+                    <span>{item.q}</span>
+                    <ChevronDown className={`w-5 h-5 text-rose-400 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
+                  </button>
+                  {open && <p className="px-5 pb-5 -mt-1 text-sm text-gray-600 leading-relaxed">{item.a}</p>}
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
+        {/* ───────────── Final CTA ───────────── */}
+        {!hasPass && (
+          <section className="px-4 pb-20">
+            <div className="max-w-4xl mx-auto rounded-3xl bg-gray-900 text-white p-10 sm:p-14 text-center relative overflow-hidden">
+              <div className="absolute -top-20 -right-20 w-64 h-64 bg-rose-500/40 rounded-full blur-3xl pointer-events-none" />
+              <div className="relative">
+                <h2 className="text-2xl sm:text-4xl font-extrabold">Your next favourite conversation is waiting 💞</h2>
+                <p className="text-sm text-white/70 mt-3">Unlock every couples game for less than a cup of coffee.</p>
+                <button
+                  onClick={() => setPayOpen(true)}
+                  className="mt-7 inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 font-extrabold text-sm shadow-xl hover:scale-105 active:scale-95 transition-all"
+                >
+                  <Lock className="w-4 h-4" />
+                  Unlock the Couples Pack
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+      </main>
 
-        {/* Payment Unlock Modal */}
-        <PaymentModal
-          isOpen={isPaymentModalOpen}
-          onClose={() => setIsPaymentModalOpen(false)}
-        />
-
-      </div>
-    </AgeGate>
+      <PaymentModal isOpen={payOpen} onClose={() => setPayOpen(false)} onAccountChange={setAccount} />
+    </div>
   );
 }

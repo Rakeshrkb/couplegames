@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { GoogleSignInButton } from '@/components/GoogleSignInButton';
 export const metadata: Metadata = {
   title: 'Contact — couplegames',
   description:
@@ -38,7 +37,6 @@ const REASONS = [
 export default function ContactPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-gray-800">
-      <GoogleSignInButton />
       <Link
         href="/"
         className="text-xs font-semibold text-rose-600"
