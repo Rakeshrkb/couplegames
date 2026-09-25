@@ -61,7 +61,7 @@ export const MidnightDiceGame: React.FC = () => {
       <div className="text-center mb-6">
         <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-100 border border-rose-200 text-rose-700 text-xs font-extrabold uppercase tracking-widest mb-3">
           <Flame className="w-4 h-4 text-rose-500 fill-rose-500" />
-          <span>18+ Couples Only</span>
+          <span>Couples Only</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Midnight Fantasy Dice 🎲</h2>
         <p className="text-xs sm:text-sm text-gray-500 mt-1">Roll both dice and do what they say.</p>

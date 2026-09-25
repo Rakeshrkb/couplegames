@@ -23,6 +23,8 @@ const COMPANY_LINKS = [
   { href: '/credits', label: 'Credits' },
   { href: '/privacy', label: 'Privacy Policy' },
   { href: '/terms', label: 'Terms of Use' },
+  { href: '/refund-policy', label: 'Refund Policy' },
+  { href: '/delivery-policy', label: 'Delivery Policy' },
 ];
 
 export const Footer: React.FC<FooterProps> = ({ onOpenGamesDrawer }) => {
@@ -66,7 +68,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenGamesDrawer }) => {
               {CATEGORIES.map((cat) => (
                 <li key={cat.id}>
                   <a
-                    href={cat.id === 'spicy' ? '/hot-fantasies' : '/#games-catalog'}
+                    href={cat.id === 'couples' ? '/couples-corner' : '/#games-catalog'}
                     className="hover:text-rose-600 transition-colors flex items-center gap-1.5"
                   >
                     <span>{cat.icon}</span>

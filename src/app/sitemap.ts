@@ -5,7 +5,7 @@ const SITE = 'https://www.playcouplegames.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const gamePages = GAMES_DATA
-        .filter((g) => g.category !== 'spicy')
+        .filter((g) => g.category !== 'couples')
         .map((g) => ({
             url: `${SITE}/games/${g.slug}`,
             lastModified: new Date(),
@@ -20,5 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { url: `${SITE}/contact`, lastModified: new Date(), priority: 0.3 },
         { url: `${SITE}/credits`, lastModified: new Date(), priority: 0.2 },
         { url: `${SITE}/games`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
+        { url: `${SITE}/refund-policy`, lastModified: new Date(), priority: 0.2 },
+        { url: `${SITE}/delivery-policy`, lastModified: new Date(), priority: 0.2 },
     ];
 }

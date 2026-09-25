@@ -6,9 +6,9 @@ import { GameItem, GameCategory } from '@/types/game';
 import Link from 'next/link';
 import { Search, Sparkles, ArrowUpRight, Flame, Heart, Trophy, Filter } from 'lucide-react';
 
-// 18+ games live only on /hot-fantasies, behind the age gate
-const PUBLIC_GAMES = GAMES_DATA.filter((g) => g.category !== 'spicy');
-const PUBLIC_CATEGORIES = CATEGORIES.filter((c) => c.id !== 'spicy');
+// 18+ games live only on /couples-corner, behind the age gate
+const PUBLIC_GAMES = GAMES_DATA.filter((g) => g.category !== 'couples');
+const PUBLIC_CATEGORIES = CATEGORIES.filter((c) => c.id !== 'couples');
 interface GameCatalogProps {
   onSelectGame: (game: GameItem) => void;
 }
@@ -86,8 +86,8 @@ export const GameCatalog: React.FC<GameCatalogProps> = ({ onSelectGame }) => {
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`px-4 py-2 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${selectedCategory === cat.id
-                    ? 'bg-rose-500 text-white shadow-sm shadow-rose-200'
-                    : 'bg-white border border-rose-100 text-gray-600 hover:bg-rose-50 hover:border-rose-300'
+                  ? 'bg-rose-500 text-white shadow-sm shadow-rose-200'
+                  : 'bg-white border border-rose-100 text-gray-600 hover:bg-rose-50 hover:border-rose-300'
                   }`}
               >
                 <span>{cat.icon}</span>
@@ -99,11 +99,11 @@ export const GameCatalog: React.FC<GameCatalogProps> = ({ onSelectGame }) => {
 
           {/* 18+ goes to its own page, through the age gate */}
           <Link
-            href="/hot-fantasies"
+            href="/couples-corner"
             className="px-4 py-2 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 bg-white border-2 border-pink-400 text-rose-600 hover:bg-rose-50"
           >
             <span>🔥</span>
-            <span>Hot Fantasies (18+)</span>
+            <span>Couples Corner</span>
             <span>→</span>
           </Link>
         </div>

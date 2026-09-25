@@ -41,7 +41,7 @@ export const AgeGate: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
         <h1 className="text-2xl font-extrabold text-gray-900 mb-2">Are you 18 or older?</h1>
         <p className="text-sm text-gray-600 mb-6">
-          Hot Fantasies contains adult themes for couples. You must be 18+ to enter.
+          Couple Fantasies contains themes for couples
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3">

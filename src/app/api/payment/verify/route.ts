@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       deviceId,
       hasActivePass: true,
       paidUntil: updatedRecord.paidUntil,
-      message: '₹25 INR Payment Verified! 24-Hour Hot Fantasies Pass Activated!',
+      message: 'Payment Verified! 24-Hour Couple Pass Activated!',
     });
   } catch (err) {
     return NextResponse.json({ error: 'PAYMENT_VERIFICATION_FAILED' }, { status: 500 });

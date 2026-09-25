@@ -3,9 +3,9 @@ import { EXTRA_TEASER_QUESTIONS } from './extraTeasers';
 
 export const CATEGORIES: CategoryInfo[] = [
   {
-    id: 'spicy',
-    name: 'Hot Fantasies (18+)',
-    description: 'Naughty games, spicy challenges, and fantasy spinning games designed exclusively for adventurous couples.',
+    id: 'couples',
+    name: 'Couples Corner 💞',
+    description: 'Deeper games to help couples know each other better, couples challenges, and fantasy spinning games designed exclusively for adventurous couples.',
     badgeColor: 'bg-rose-950 text-rose-300 border-rose-800',
     accentColor: '#E11D48',
     icon: '🔥',
@@ -70,33 +70,33 @@ export const FANTASPIN_ITEMS: FantaspinItem[] = Array.from(
 );
 
 export const GAMES_DATA: GameItem[] = [
-  // Hot Fantasies (18+)
-  {
-    id: 'fantaspin',
-    title: 'Fantaspin',
-    slug: 'fantaspin',
-    icon: '🎰',
-    category: 'spicy',
-    questionCount: 50,
-    badge: '18+ Hot',
-    isCustomGame: true,
-    description: 'Spin the fantasy reel! Watch the couple images rush upwards fast and land on an intimate scenario for you two to explore.',
-    shortDescription: 'Spinning fantasy wheel with 10 couple moments & dares.',
-    sampleQuestions: [
-      'Twilight Balcony Embrace — Whisper a secret romantic wish into your partner’s ear.',
-      'Passionate Sunset Hold — Share a slow 60-second kiss with eyes closed.'
-    ]
-  },
+  // Couples Corner 💞
+  // {
+  //   id: 'fantaspin',
+  //   title: 'Fantaspin',
+  //   slug: 'fantaspin',
+  //   icon: '🎰',
+  //   category: 'couples',
+  //   questionCount: 50,
+  //   badge: 'Couples Pack',
+  //   isCustomGame: true,
+  //   description: 'Spin the fantasy reel! Watch the couple images rush upwards fast and land on an intimate scenario for you two to explore.',
+  //   shortDescription: 'Spinning fantasy wheel with 10 couple moments & dares.',
+  //   sampleQuestions: [
+  //     'Twilight Balcony Embrace — Whisper a secret romantic wish into your partner’s ear.',
+  //     'Passionate Sunset Hold — Share a slow 60-second kiss with eyes closed.'
+  //   ]
+  // },
   {
     id: 'naughty-truth-or-dare',
-    title: 'Naughty Truth or Dare',
-    slug: 'naughty-truth-or-dare-18-plus',
+    title: 'Couple Truth or Dare',
+    slug: 'naughty-truth-or-dare-for-couples',
     icon: '💋',
-    category: 'spicy',
+    category: 'couples',
     questionCount: 50,
-    badge: '18+ Hot',
-    description: 'Spicy, daring prompts crafted for adventurous couples looking to heat up date night.',
-    shortDescription: 'Spicy 18+ truths & daring challenges.',
+    badge: 'Couples Pack',
+    description: 'couples, daring prompts crafted for adventurous couples looking to heat up date night.',
+    shortDescription: 'couples truths & daring challenges.',
     sampleQuestions: [
       'Truth: What is one romantic fantasy of mine you find irresistible?',
       'Dare: Whisper the spiciest compliment you can think of in my ear.',
@@ -107,11 +107,11 @@ export const GAMES_DATA: GameItem[] = [
     title: 'Midnight Fantasy Dice',
     slug: 'midnight-fantasy-dice',
     icon: '🎲',
-    category: 'spicy',
+    category: 'couples',
     questionCount: 36,
-    badge: '18+ Hot',
+    badge: 'Couples Pack',
     description: 'Roll the romantic dice to generate spontaneous combinations of affection & actions.',
-    shortDescription: 'Roll spontaneous spicy action combinations.',
+    shortDescription: 'Roll spontaneous couples action combinations.',
     sampleQuestions: [
       'Action: 30-second back massage + Spot: Living room sofa',
       'Action: Gentle kiss + Spot: Neck & collarbone',
@@ -143,7 +143,7 @@ export const GAMES_DATA: GameItem[] = [
     questionCount: 100,
     badge: 'Hot',
     description: 'Test your courage with sweet truths or playful dares designed specifically for two.',
-    shortDescription: 'Revealing truths and spicy dares for date night.',
+    shortDescription: 'Revealing truths and couples dares for date night.',
     sampleQuestions: [
       'Truth: What was your exact first impression of me when we met?',
       'Dare: Give your partner a 30-second back massage right now.'
@@ -215,8 +215,8 @@ export const GAMES_DATA: GameItem[] = [
     category: 'party',
     questionCount: 50,
     badge: 'Hot',
-    description: 'Answer spicy relationship questions or take a sip of your favorite date night drink.',
-    shortDescription: 'Spicy questions or take a sip!',
+    description: 'Answer couples relationship questions or take a sip of your favorite date night drink.',
+    shortDescription: 'couples questions or take a sip!',
     sampleQuestions: [
       'What is something you wanted to do on our first date but were too shy?',
       'What was the exact moment you realized you were falling for me?'

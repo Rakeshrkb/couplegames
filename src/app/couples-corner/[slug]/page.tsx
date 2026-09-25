@@ -6,7 +6,7 @@ import { GAMES_DATA } from '@/data/gamesData';
 import { GamePlayer } from '@/components/GamePlayer';
 import { AgeGate } from '@/components/AgeGate';
 
-const SPICY_GAMES = GAMES_DATA.filter((g) => g.category === 'spicy');
+const SPICY_GAMES = GAMES_DATA.filter((g) => g.category === 'couples');
 
 export function generateStaticParams() {
   return SPICY_GAMES.map((g) => ({ slug: g.slug }));
@@ -43,7 +43,7 @@ export default async function SpicyGamePage(
         <nav className="text-xs font-semibold text-gray-500 flex items-center gap-1.5 flex-wrap">
           <Link href="/" className="hover:text-rose-600">Home</Link>
           <span>/</span>
-          <Link href="/hot-fantasies" className="hover:text-rose-600">Hot Fantasies 🔞</Link>
+          <Link href="/couples-corner" className="hover:text-rose-600">Couples Corner 💞</Link>
           <span>/</span>
           <span className="text-rose-600">{game.title}</span>
         </nav>
@@ -51,7 +51,7 @@ export default async function SpicyGamePage(
         {/* Header */}
         <div className="text-center mt-6 mb-6">
           <span className="inline-block px-3 py-1 rounded-full bg-rose-100 border border-rose-200 text-rose-700 text-[10px] font-extrabold uppercase tracking-widest mb-3">
-            18+ Couples Only
+            Couples Only
           </span>
           <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-900">{game.title}</h1>
           <p className="text-sm text-gray-600 mt-2 max-w-2xl mx-auto">{game.description}</p>
@@ -70,7 +70,7 @@ export default async function SpicyGamePage(
               {others.map((g) => (
                 <Link
                   key={g.id}
-                  href={`/hot-fantasies/${g.slug}`}
+                  href={`/couples-corner/${g.slug}`}
                   className="group flex items-center gap-4 p-4 rounded-2xl bg-white border-2 border-rose-100 hover:border-rose-300 hover:shadow-md transition-all"
                 >
                   <span className="text-3xl">{g.icon}</span>

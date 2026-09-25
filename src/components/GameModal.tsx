@@ -72,23 +72,23 @@ export const GameModal: React.FC<GameModalProps> = ({ game, onClose }) => {
   if (!game) return null;
 
   // Special handle for custom game "Fantaspin"
-  if (game.id === 'fantaspin') {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
-        <div className="absolute inset-0" onClick={onClose} />
-        <div className="relative w-full max-w-3xl z-10">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 z-30 w-9 h-9 rounded-full bg-rose-950 text-rose-300 hover:text-white hover:bg-rose-900 flex items-center justify-center border border-rose-700 transition-colors"
-            aria-label="Close Fantaspin"
-          >
-            <X className="w-5 h-5" />
-          </button>
-          <FantaspinGame onClose={onClose} />
-        </div>
-      </div>
-    );
-  }
+  // if (game.id === 'fantaspin') {
+  //   return (
+  //     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
+  //       <div className="absolute inset-0" onClick={onClose} />
+  //       <div className="relative w-full max-w-3xl z-10">
+  //         <button
+  //           onClick={onClose}
+  //           className="absolute top-4 right-4 z-30 w-9 h-9 rounded-full bg-rose-950 text-rose-300 hover:text-white hover:bg-rose-900 flex items-center justify-center border border-rose-700 transition-colors"
+  //           aria-label="Close Fantaspin"
+  //         >
+  //           <X className="w-5 h-5" />
+  //         </button>
+  //         <FantaspinGame onClose={onClose} />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   const category = CATEGORIES.find(c => c.id === game.category);
 

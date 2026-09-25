@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, Playfair_Display } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import { Providers } from '@/components/Providers';
 import './globals.css';
 
 const jakarta = Plus_Jakarta_Sans({
@@ -40,7 +41,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${jakarta.variable} ${playfair.variable} scroll-smooth`}>
       <body className="min-h-screen flex flex-col font-sans antialiased text-gray-900 bg-white selection:bg-rose-500 selection:text-white">
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
       {process.env.NEXT_PUBLIC_GA_ID && (
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />

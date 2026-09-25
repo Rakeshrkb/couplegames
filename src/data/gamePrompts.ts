@@ -732,8 +732,8 @@ export const GAME_PROMPTS: Record<string, string[]> = {
 const naughty = (id: number, truthText: string, dareText: string): TeaserQuestion => ({
   id: `ntod-${id}`,
   type: 'truth_or_dare',
-  title: 'Naughty Truth or Dare',
-  prompt: 'Spicy truths or daring challenges. 18+ only.',
+  title: 'Couple Truth or Dare',
+  prompt: 'Spicy truths or daring challenges.',
   truthText,
   dareText,
 });

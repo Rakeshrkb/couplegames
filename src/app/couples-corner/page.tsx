@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getOrCreateDeviceId } from '@/lib/auth';
-import { FantaspinGame } from '@/components/FantaspinGame';
+// import { FantaspinGame } from '@/components/FantaspinGame';
 import { PaymentModal } from '@/components/PaymentModal';
 import { GAMES_DATA } from '@/data/gamesData';
 import { GameItem } from '@/types/game';
@@ -60,7 +60,7 @@ export default function HotFantasiesPage() {
     return `${hours}h ${mins}m remaining`;
   };
 
-  const spicyGames = GAMES_DATA.filter(g => g.category === 'spicy');
+  const spicyGames = GAMES_DATA.filter(g => g.category === 'couples');
 
   return (
     <AgeGate>
@@ -94,7 +94,7 @@ export default function HotFantasiesPage() {
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs font-bold shadow-sm shadow-rose-200 hover:shadow-md hover:scale-105 transition-all"
             >
               <Unlock className="w-3.5 h-3.5" />
-              <span>Unlock 24h Pass (₹25)</span>
+              <span>Unlock Couples Pack (from ₹29)</span>
             </button>
 
           </div>
@@ -147,7 +147,7 @@ export default function HotFantasiesPage() {
             <div className="text-center max-w-2xl mx-auto">
               <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-100 border border-rose-200 text-rose-700 text-xs font-extrabold uppercase tracking-widest mb-2 shadow-2xs">
                 <Flame className="w-4 h-4 text-rose-500 fill-rose-500 animate-pulse" />
-                <span>Featured 18+ Game</span>
+                <span>💞 Featured Couples Game</span>
               </div>
               {/* <p className="text-xs sm:text-sm text-gray-600 mt-1">
               Spin the fantasy reel! Watch the couple images rush upwards fast and land on an intimate scenario for two.
@@ -155,7 +155,7 @@ export default function HotFantasiesPage() {
             </div>
 
             {/* Fantaspin Component */}
-            <FantaspinGame />
+            {/* <FantaspinGame /> */}
           </section>
 
           {/* OTHER SPICY 18+ GAMES GRID */}
@@ -163,7 +163,7 @@ export default function HotFantasiesPage() {
             <div className="flex items-center justify-between border-b border-rose-200 pb-3">
               <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                 <Flame className="w-5 h-5 text-rose-500 fill-rose-500" />
-                <span>More Hot Fantasies Games (18+)</span>
+                <span>Couples Games</span>
               </h3>
               <span className="text-xs text-rose-600 font-semibold bg-rose-50 px-2.5 py-1 rounded-full border border-rose-100">
                 {spicyGames.length} games available
@@ -190,7 +190,7 @@ export default function HotFantasiesPage() {
                   <div className="mt-4 pt-3 border-t border-rose-50 flex items-center justify-between text-xs">
                     <span className="text-rose-600 font-semibold">{game.questionCount} prompts</span>
                     <Link
-                      href={`/hot-fantasies/${game.slug}`}
+                      href={`/couples-corner/${game.slug}`}
                       className="px-4 py-2 rounded-full bg-rose-500 text-white font-bold hover:bg-rose-600 transition-colors shadow-2xs"
                     >
                       Play Game
@@ -202,14 +202,12 @@ export default function HotFantasiesPage() {
           </section>
 
         </main>
-        
+
 
         {/* Payment Unlock Modal */}
         <PaymentModal
           isOpen={isPaymentModalOpen}
-          deviceId={deviceId}
           onClose={() => setIsPaymentModalOpen(false)}
-          onPaymentSuccess={handlePaymentSuccess}
         />
 
       </div>

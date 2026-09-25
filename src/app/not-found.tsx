@@ -7,7 +7,7 @@ import { Heart, Shuffle, Home } from 'lucide-react';
 import { GAMES_DATA } from '@/data/gamesData';
 
 // Only non-18+ games, so a random pick never lands someone in the spicy section
-const PUBLIC_GAMES = GAMES_DATA.filter((g) => g.category !== 'spicy');
+const PUBLIC_GAMES = GAMES_DATA.filter((g) => g.category !== 'couples');
 
 const POPULAR = [
   { href: '/games/would-you-rather-for-couples', label: '🤔 Would You Rather' },

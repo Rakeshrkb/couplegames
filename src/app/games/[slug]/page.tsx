@@ -8,7 +8,7 @@ import { GAME_CONTENT } from '@/data/gameContent';
 import { GamePlayer } from '@/components/GamePlayer';
 
 const SITE = 'https://www.playcouplegames.com';
-const PUBLIC_GAMES = GAMES_DATA.filter((g) => g.category !== 'spicy');
+const PUBLIC_GAMES = GAMES_DATA.filter((g) => g.category !== 'couples');
 
 const TYPE_BY_ID: Record<string, 'would_you_rather' | 'truth_or_dare' | 'this_or_that'> = {
     'would-you-rather': 'would_you_rather',

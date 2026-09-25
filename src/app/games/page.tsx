@@ -4,7 +4,7 @@ import { Flame, ArrowRight } from 'lucide-react';
 import { CATEGORIES, GAMES_DATA } from '@/data/gamesData';
 
 const SITE = 'https://www.playcouplegames.com';
-const PUBLIC_GAMES = GAMES_DATA.filter((g) => g.category !== 'spicy');
+const PUBLIC_GAMES = GAMES_DATA.filter((g) => g.category !== 'couples');
 const PUBLIC_CATEGORIES = CATEGORIES.filter((c) => c.id !== 'spicy');
 
 export const metadata: Metadata = {
@@ -90,7 +90,7 @@ export default function AllGamesPage() {
 
       {/* 18+ section card (kept separate, goes through the age gate) */}
       <Link
-        href="/hot-fantasies"
+        href="/couples-corner"
         className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 rounded-3xl bg-white border-2 border-pink-400 shadow-lg shadow-pink-100 hover:shadow-xl transition-all"
       >
         <div className="flex items-center gap-4">
@@ -98,8 +98,8 @@ export default function AllGamesPage() {
             <Flame className="w-6 h-6 fill-white text-white" />
           </span>
           <div>
-            <h2 className="text-lg font-bold text-gray-900">Hot Fantasies 🔞</h2>
-            <p className="text-xs text-gray-500">Spicy games for adult couples. 18+ only, age confirmation required.</p>
+            <h2 className="text-lg font-bold text-gray-900">Couples Corner 💞</h2>
+            <p className="text-xs text-gray-500">Spicy games for couples, age confirmation required.</p>
           </div>
         </div>
         <span className="inline-flex items-center gap-1 text-sm font-bold text-rose-600">

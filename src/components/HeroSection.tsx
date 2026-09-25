@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Sparkles, Gamepad2, Heart, ArrowDown, Flame } from 'lucide-react';
+import { Sparkles, Gamepad2, Heart, ArrowDown, Flame, ArrowRight } from 'lucide-react';
 
 interface HeroSectionProps {
   onExploreClick: () => void;
@@ -11,13 +11,13 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
   return (
     <section className="relative overflow-hidden pt-12 pb-8 sm:pt-16 sm:pb-12 bg-gradient-to-b from-white via-rose-50/30 to-white text-center">
-      
+
       {/* Background Subtle Pink Orbs */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-rose-200/40 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-10 right-10 w-64 h-64 bg-pink-200/30 rounded-full blur-2xl pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
-        
+
         {/* Top Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-100/80 border border-rose-200 text-rose-700 text-xs font-semibold mb-6 shadow-sm animate-bounce-slow">
           <Sparkles className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
@@ -37,9 +37,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
           Pick an answer. Spark a real conversation. Playful date night games, conversation starters, and party classics — no sign-up needed.
         </p>
 
-        {/* CENTER BUTTON AREA: Explore All Games | Hot Fantasies 🔞 | Try Quick Teaser */}
+        {/* CENTER BUTTON AREA: Explore All Games | Couples Corner 💞 | Try Quick Teaser */}
         <div className="mt-8 flex flex-col md:flex-row items-center justify-center gap-3 sm:gap-4">
-          
+
           {/* Button 1: Explore All Games */}
           <button
             onClick={onExploreClick}
@@ -52,9 +52,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
             </span>
           </button>
 
-          {/* Button 2 (IN THE MIDDLE): Hot Fantasies 🔞 (Eye-catching Flame & Beautiful Matching Gradient) */}
+          {/* Button 2 (IN THE MIDDLE): Couples Corner 💞 (Eye-catching Flame & Beautiful Matching Gradient) */}
           <Link
-            href="/hot-fantasies"
+            href="/couples-corner"
             className="w-full md:w-auto group relative inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-pink-600 text-white text-sm sm:text-base font-extrabold shadow-lg shadow-rose-300/80 hover:shadow-xl hover:shadow-rose-400 hover:scale-105 active:scale-95 transition-all duration-200 border border-red-400/30"
           >
             {/* Eye-catching Pulsing Burning Flame Container */}
@@ -63,11 +63,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
               <Flame className="w-4 h-4 text-amber-300 fill-amber-300 relative z-10 animate-pulse" />
             </div>
 
-            <span className="tracking-wide">Hot Fantasies</span>
+            <span className="tracking-wide">Couples, this way please 💞</span>
 
-            <span className="text-[10px] bg-black/30 backdrop-blur-xs text-amber-300 border border-amber-300/40 px-2 py-0.5 rounded-full font-extrabold tracking-wider">
-              18+
-            </span>
+            <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" />
           </Link>
 
           {/* Button 3: Try Quick Teaser */}

@@ -16,8 +16,8 @@ const PLAYABLE_TYPES: Record<string, 'would_you_rather' | 'truth_or_dare' | 'thi
 export const GamePlayer: React.FC<{ gameId: string }> = ({ gameId }) => {
     const game = GAMES_DATA.find((g) => g.id === gameId);
     if (!game) return null;
-    // 18+ games (only shown on /hot-fantasies/[slug], behind the age gate)
-    if (game.id === 'fantaspin') return <FantaspinGame />;
+    // 18+ games (only shown on /couples-corner/[slug], behind the age gate)
+    // if (game.id === 'fantaspin') return <FantaspinGame />;
     if (game.id === 'midnight-dice') return <MidnightDiceGame />;
     if (game.id === 'naughty-truth-or-dare') {
         return (

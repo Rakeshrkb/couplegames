@@ -98,7 +98,7 @@ export const GameMenuDrawer: React.FC<GameMenuDrawerProps> = ({
                       {categoryGames.map((game) => (
                         <Link
                           key={game.id}
-                          href={game.category === 'spicy' ? `/hot-fantasies/${game.slug}` : `/games/${game.slug}`}
+                          href={game.category === 'couples' ? `/couples-corner/${game.slug}` : `/games/${game.slug}`}
                           onClick={onClose}
                           className="w-full text-left flex items-center gap-3 p-2.5 rounded-xl hover:bg-rose-50 group transition-colors"
                         >

@@ -33,7 +33,7 @@ export default function AboutPage() {
             <li><strong>Free:</strong> every game is free to play.</li>
             <li><strong>No sign-up:</strong> no account, no email, no app to download.</li>
             <li><strong>Private:</strong> your answers stay between you two and are never saved.</li>
-            <li><strong>For everyone:</strong> couples, long-distance partners and friends. The 18+ Hot Fantasies section is kept separate and asks you to confirm your age.</li>
+            <li><strong>For everyone:</strong> couples, long-distance partners and friends. The Couples corner is kept separate and asks you to confirm your age.</li>
           </ul>
         </section>
 

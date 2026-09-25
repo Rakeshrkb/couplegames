@@ -1,9 +1,10 @@
-export type GameCategory = 
+export type GameCategory =
   | 'party'
   | 'fun'
   | 'conversation'
   | 'romance'
   | 'lifestyle'
+  | 'couples'
   | 'spicy';
 
 export interface CategoryInfo {
@@ -25,7 +26,7 @@ export interface GameItem {
   questionCount: number;
   description: string;
   shortDescription: string;
-  badge?: 'Popular' | 'Hot' | 'Trending' | 'Romantic' | 'New' | '18+ Hot';
+  badge?: 'Popular' | 'Hot' | 'Trending' | 'Romantic' | 'New' | 'Couples Pack';
   sampleQuestions: string[];
   isCustomGame?: boolean;
 }
