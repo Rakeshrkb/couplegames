@@ -10,7 +10,6 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenGamesDrawer }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  sendGAEvent('event', 'Explore all games clicked');
 
 
   const scrollToSection = (id: string) => {
@@ -75,7 +74,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGamesDrawer }) => {
         {/* Action Button: Explore All Games */}
         <div className="flex items-center gap-3">
           <button
-            onClick={onOpenGamesDrawer}
+            onClick={() => {
+              sendGAEvent('event', 'Explore all games clicked');
+              onOpenGamesDrawer
+            }}
             className="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 text-white text-sm font-semibold shadow-sm hover:shadow-md hover:shadow-rose-200 hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
             <Gamepad2 className="w-4 h-4" />
