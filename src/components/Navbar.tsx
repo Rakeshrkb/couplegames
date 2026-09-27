@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Heart, Menu, X, Sparkles, Gamepad2 } from 'lucide-react';
+import { sendGAEvent } from '@next/third-parties/google';
 
 interface NavbarProps {
   onOpenGamesDrawer: () => void;
@@ -9,6 +10,8 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenGamesDrawer }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  sendGAEvent('event', 'Explore all games clicked');
+
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
@@ -21,10 +24,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGamesDrawer }) => {
   return (
     <header className="sticky top-0 z-40 w-full bg-white/85 backdrop-blur-md border-b border-rose-100 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        
+
         {/* Logo */}
-        <a 
-          href="#" 
+        <a
+          href="#"
           className="flex items-center gap-2.5 group"
           aria-label="couplegames homepage"
         >
@@ -43,25 +46,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGamesDrawer }) => {
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-          <button 
+          <button
             onClick={() => scrollToSection('games-catalog')}
             className="hover:text-rose-600 transition-colors"
           >
             All Games
           </button>
-          <button 
+          <button
             onClick={() => scrollToSection('featured-playground')}
             className="hover:text-rose-600 transition-colors"
           >
             Play Preview
           </button>
-          <button 
+          <button
             onClick={() => scrollToSection('features')}
             className="hover:text-rose-600 transition-colors"
           >
             Why couplegames
           </button>
-          <button 
+          <button
             onClick={() => scrollToSection('faq')}
             className="hover:text-rose-600 transition-colors"
           >

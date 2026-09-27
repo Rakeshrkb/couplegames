@@ -3,6 +3,7 @@ import { getCurrentAccount } from '@/lib/currentAccount';
 import { applyPassToAccount } from '@/lib/accounts';
 import { findOrder, settleOrder } from '@/lib/payments';
 import { getPhonePeOrderStatus } from '@/lib/phonepe';
+import { dodo, settleDodoPayment } from '@/lib/dodo';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,12 +19,23 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'NOT_FOUND' }, { status: 404 });
   }
 
-  // Already settled earlier
+  // Already settled earlier (by the webhook or a previous check)
   if (order.status !== 'PENDING') {
     return NextResponse.json({ status: order.status, plan: order.plan });
   }
 
   try {
+    // Dodo: ask Dodo about the checkout session directly. This also makes it work
+    // on localhost, where Dodo's webhook can't reach you.
+    if (order.provider === 'dodo') {
+      if (!order.dodoSessionId) return NextResponse.json({ status: 'PENDING' });
+      const session = await dodo().checkoutSessions.retrieve(order.dodoSessionId);
+      if (!session.payment_id) return NextResponse.json({ status: 'PENDING' });
+      const status = await settleDodoPayment(session.payment_id);
+      return NextResponse.json({ status, plan: order.plan });
+    }
+
+    // PhonePe (unchanged)
     const { state, amount } = await getPhonePeOrderStatus(orderId);
 
     if (state === 'COMPLETED') {

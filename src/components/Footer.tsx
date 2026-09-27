@@ -4,6 +4,7 @@ import React from 'react';
 import { Heart, Gamepad2 } from 'lucide-react';
 import { CATEGORIES } from '@/data/gamesData';
 import Link from 'next/link';
+import { sendGAEvent } from '@next/third-parties/google';
 
 interface FooterProps {
   onOpenGamesDrawer: () => void;
@@ -69,6 +70,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenGamesDrawer }) => {
                 <li key={cat.id}>
                   <a
                     href={cat.id === 'couples' ? '/couples-corner' : '/#games-catalog'}
+                    onClick={() =>
+                      cat.id === 'couples'
+                        ? sendGAEvent('event', 'couples_corner_click', { source: 'footer' })
+                        : sendGAEvent('event', 'category_click', { category: cat.id, source: 'footer' })
+                    }
                     className="hover:text-rose-600 transition-colors flex items-center gap-1.5"
                   >
                     <span>{cat.icon}</span>

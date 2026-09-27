@@ -21,6 +21,7 @@ import { GAMES_DATA } from '@/data/gamesData';
 import { PaymentModal } from '@/components/PaymentModal';
 import { useSession } from 'next-auth/react';
 import type { PublicAccount } from '@/lib/accounts';
+import { PRICING, price, type Region } from '@/lib/pricing';
 
 // Games already built for the pack. Works whether the category is still 'spicy' or renamed
 // to 'couples'. Fantaspin is left out because it is commented out.
@@ -52,7 +53,7 @@ const FAQ = [
   },
   {
     q: 'Is it a subscription?',
-    a: 'No. It is a one-time payment: ₹29 for 24 hours, or ₹39 for lifetime access. Nothing renews automatically.',
+    a: 'No. It is a one-time payment: 29 for 24 hours, or 39 for lifetime access. Nothing renews automatically.',
   },
   {
     q: 'Can we use it on both our phones?',
@@ -69,11 +70,15 @@ export default function CouplesCornerPage() {
   const [payOpen, setPayOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const { data: session } = useSession();
+  const [region, setRegion] = useState<Region>('IN');
 
   useEffect(() => {
     fetch('/api/account/me', { cache: 'no-store' })
       .then((r) => r.json())
-      .then((d) => setAccount(d.account))
+      .then((d) => {
+        setAccount(d.account);
+        if (d.region) setRegion(d.region);
+      })
       .catch(() => setAccount(null));
   }, []);
 
@@ -83,7 +88,7 @@ export default function CouplesCornerPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-900">
       {/* ───────────── Header ───────────── */}
-            <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-rose-100 px-4 py-3">
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-rose-100 px-4 py-3">
         <div className="max-w-6xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-3">
           <Link
             href="/"
@@ -184,7 +189,7 @@ export default function CouplesCornerPage() {
                   className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-white text-rose-600 font-extrabold text-sm shadow-xl hover:scale-105 active:scale-95 transition-all"
                 >
                   <Lock className="w-4 h-4" />
-                  Unlock lifetime for ₹39
+                  Unlock lifetime for {price(region, 'lifetime')}
                 </button>
               )}
               <a
@@ -198,7 +203,7 @@ export default function CouplesCornerPage() {
             <div className="mt-10 grid grid-cols-3 gap-3 max-w-lg mx-auto">
               {[
                 { value: `${totalGames}+`, label: 'couples games' },
-                { value: '₹39', label: 'lifetime access' },
+                { value: price(region, 'lifetime'), label: 'lifetime access' },
                 { value: '0', label: 'subscriptions' },
               ].map((s) => (
                 <div key={s.label} className="rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm py-3">
@@ -295,7 +300,7 @@ export default function CouplesCornerPage() {
             <div className="text-center mb-10">
               <p className="text-xs font-extrabold uppercase tracking-widest text-rose-500 mb-2">Simple pricing</p>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Less than a cup of coffee</h2>
-              <p className="text-sm text-gray-500 mt-2">One-time payment. No subscription. Pay with UPI, cards or net banking.</p>
+              <p className="text-sm text-gray-500 mt-2">One-time payment. No subscription. Pay with {PRICING[region].methods}.</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -303,7 +308,7 @@ export default function CouplesCornerPage() {
               <div className="rounded-3xl border-2 border-rose-100 bg-white p-7 flex flex-col">
                 <Clock className="w-7 h-7 text-rose-400 mb-3" />
                 <h3 className="text-sm font-extrabold uppercase tracking-wider text-gray-500">24 Hours</h3>
-                <div className="mt-1 text-5xl font-extrabold text-gray-900">₹29</div>
+                <div className="mt-1 text-5xl font-extrabold text-gray-900">{price(region, 'day')}</div>
                 <p className="text-sm text-gray-500 mt-2">Perfect for one special date night.</p>
                 <ul className="mt-5 space-y-2 text-sm text-gray-700 flex-1">
                   {['All pack games for 24 hours', 'Play on phone or laptop'].map((f) => (
@@ -323,11 +328,11 @@ export default function CouplesCornerPage() {
               {/* Lifetime */}
               <div className="relative rounded-3xl p-7 flex flex-col text-white bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-600 shadow-2xl shadow-rose-200 sm:scale-[1.03]">
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white text-rose-600 text-[10px] font-extrabold uppercase tracking-widest shadow-md">
-                  Best value · Just ₹10 more
+                  Best value · {PRICING[region].upsell}
                 </span>
                 <InfinityIcon className="w-7 h-7 text-white mb-3" />
                 <h3 className="text-sm font-extrabold uppercase tracking-wider text-white/80">Lifetime</h3>
-                <div className="mt-1 text-5xl font-extrabold">₹39</div>
+                <div className="mt-1 text-5xl font-extrabold">{price(region, 'lifetime')}</div>
                 <p className="text-sm text-white/85 mt-2">Yours forever, including every new game.</p>
                 <ul className="mt-5 space-y-2 text-sm flex-1">
                   {['All pack games, forever', 'Every future game included', 'Works on any device with Google sign-in'].map((f) => (
@@ -347,7 +352,7 @@ export default function CouplesCornerPage() {
 
             <p className="mt-6 text-center text-xs text-gray-400 flex items-center justify-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-emerald-500" />
-              Secure checkout by PhonePe ·{' '}
+              Secure checkout by {PRICING[region].checkout} ·{' '}
               <Link href="/refund-policy" className="underline hover:text-rose-600">Refund Policy</Link>
             </p>
           </section>
@@ -368,7 +373,13 @@ export default function CouplesCornerPage() {
                     <span>{item.q}</span>
                     <ChevronDown className={`w-5 h-5 text-rose-400 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
                   </button>
-                  {open && <p className="px-5 pb-5 -mt-1 text-sm text-gray-600 leading-relaxed">{item.a}</p>}
+                  {open && (
+                    <p className="px-5 pb-5 -mt-1 text-sm text-gray-600 leading-relaxed">
+                      {item.a
+                        .replace('29', price(region, 'day'))
+                        .replace('39', price(region, 'lifetime'))}
+                    </p>
+                  )}
                 </div>
               );
             })}

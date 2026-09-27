@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { GAMES_DATA, CATEGORIES } from '@/data/gamesData';
 import { GameItem, GameCategory } from '@/types/game';
 import Link from 'next/link';
+import { sendGAEvent } from '@next/third-parties/google';
 import { Search, Sparkles, ArrowUpRight, Flame, Heart, Trophy, Filter } from 'lucide-react';
 
 // 18+ games live only on /couples-corner, behind the age gate
@@ -100,6 +101,7 @@ export const GameCatalog: React.FC<GameCatalogProps> = ({ onSelectGame }) => {
           {/* 18+ goes to its own page, through the age gate */}
           <Link
             href="/couples-corner"
+            onClick={() => sendGAEvent('event', 'couples_corner_click', { source: 'catalog_pill' })}
             className="px-4 py-2 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 bg-white border-2 border-pink-400 text-rose-600 hover:bg-rose-50"
           >
             <span>🔥</span>
@@ -126,7 +128,7 @@ export const GameCatalog: React.FC<GameCatalogProps> = ({ onSelectGame }) => {
       {/* Games Cards Grid */}
       {filteredGames.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-          {filteredGames.map((game) => {
+          {filteredGames.map((game, index) => {
             const cardClass =
               'group text-left relative flex flex-col justify-between bg-white rounded-2xl p-5 border-2 border-rose-100 hover:border-rose-300 hover:shadow-xl hover:shadow-rose-100/60 hover:-translate-y-1 transition-all duration-200';
 
@@ -178,7 +180,21 @@ export const GameCatalog: React.FC<GameCatalogProps> = ({ onSelectGame }) => {
 
             // All other games go to their own page and play there
             return (
-              <Link key={game.id} href={`/games/${game.slug}`} className={cardClass}>
+              <Link
+                key={game.id}
+                href={`/games/${game.slug}`}
+                onClick={() =>
+                  sendGAEvent('event', 'game_click', {
+                    game_id: game.id,
+                    game_title: game.title,
+                    category: game.category,
+                    position: index + 1,
+                    source: 'home_catalog',
+                    ...(searchQuery ? { search: searchQuery } : {}),
+                  })
+                }
+                className={cardClass}
+              >
                 {cardContent}
               </Link>
             );

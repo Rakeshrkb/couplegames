@@ -6,12 +6,14 @@ import { X, Lock, Heart, Clock, Infinity as InfinityIcon, Check, ShieldCheck } f
 import { LoginModal } from './LoginModal';
 import type { PublicAccount } from '@/lib/accounts';
 import { GoogleSignInButton } from './GoogleSignInButton';
+import { PRICING, price, type Region } from '@/lib/pricing';
 
 type Plan = 'day' | 'lifetime';
 
-const PLANS: Record<Plan, { price: number; title: string; note: string }> = {
-  day: { price: 29, title: '24 Hours', note: 'Perfect for one date night' },
-  lifetime: { price: 39, title: 'Lifetime', note: 'Just ₹10 more, yours forever' },
+// Prices come from PRICING (per region); only labels live here
+const PLANS: Record<Plan, { title: string; note: string }> = {
+  day: { title: '24 Hours', note: 'Perfect for one date night' },
+  lifetime: { title: 'Lifetime', note: 'Yours forever' },
 };
 
 const FEATURES = [
@@ -28,9 +30,6 @@ interface PaymentModalProps {
 }
 
 
-
-
-
 export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onAccountChange }) => {
   const [plan, setPlan] = useState<Plan>('lifetime');
   const [account, setAccount] = useState<PublicAccount | null>(null);
@@ -38,6 +37,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onA
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
   const [checked, setChecked] = useState(false);
+  const [region, setRegion] = useState<Region>('IN');
 
   // Load the current account each time the modal opens; ask to log in first if there is none
   useEffect(() => {
@@ -48,6 +48,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onA
       .then((r) => r.json())
       .then((d) => {
         setAccount(d.account);
+        if (d.region) setRegion(d.region);
         if (!d.account) setShowLogin(true);
       })
       .catch(() => {
@@ -80,7 +81,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onA
       const data = await res.json();
       if (!res.ok || !data.redirectUrl) throw new Error(data.error);
 
-      window.location.href = data.redirectUrl; // go to PhonePe checkout
+      window.location.href = data.redirectUrl; // go to PhonePe or Dodo checkout
     } catch {
       setProcessing(false);
       setError('Could not start the payment. Please try again.');
@@ -147,8 +148,10 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onA
                         )}
                         <Icon className={`w-5 h-5 mb-2 ${selected ? 'text-rose-500' : 'text-gray-400'}`} />
                         <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider">{p.title}</span>
-                        <span className="block text-3xl font-extrabold text-gray-900 mt-0.5">₹{p.price}</span>
-                        <span className="block text-[11px] text-gray-500 mt-1 leading-snug">{p.note}</span>
+                        <span className="block text-3xl font-extrabold text-gray-900 mt-0.5">{price(region, key)}</span>
+                        <span className="block text-[11px] text-gray-500 mt-1 leading-snug">
+                          {key === 'lifetime' ? `${PRICING[region].upsell}, ${p.note.toLowerCase()}` : p.note}
+                        </span>
                       </button>
                     );
                   })}
@@ -184,12 +187,12 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onA
                   className="w-full py-4 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white font-extrabold text-sm shadow-md shadow-rose-200 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:hover:scale-100"
                 >
                   <Lock className="w-4 h-4" />
-                  {processing ? 'Opening secure checkout…' : `Pay ₹${PLANS[plan].price} & unlock`}
+                  {processing ? 'Opening secure checkout…' : `Pay ${price(region, plan)} & unlock`}
                 </button>
 
                 <p className="text-[10px] text-center text-gray-400 mt-3 flex items-center justify-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                  Secure checkout by PhonePe · UPI, cards &amp; net banking
+                  Secure checkout by {PRICING[region].checkout} · {PRICING[region].methods}
                 </p>
                 <p className="text-[10px] text-center text-gray-400 mt-1">
                   By paying you agree to our <Link href="/terms" className="underline">Terms</Link> and{' '}

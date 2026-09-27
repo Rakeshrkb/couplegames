@@ -4,8 +4,9 @@ import { GAME_PROMPTS } from '@/data/gamePrompts';
 import { InteractivePlayground } from './InteractivePlayground';
 import { PromptCardGame } from './PromptCardGame';
 import { FantaspinGame } from './FantaspinGame';
+import { HeatTruthOrDare } from './HeatTruthOrDare';
 import { MidnightDiceGame } from './MidnightDiceGame';
-import { NAUGHTY_TOD_QUESTIONS } from '@/data/gamePrompts';
+import { CoupleTruthOrDare } from './CoupleTruthOrDare';
 
 const PLAYABLE_TYPES: Record<string, 'would_you_rather' | 'truth_or_dare' | 'this_or_that'> = {
     'would-you-rather': 'would_you_rather',
@@ -18,16 +19,9 @@ export const GamePlayer: React.FC<{ gameId: string }> = ({ gameId }) => {
     if (!game) return null;
     // 18+ games (only shown on /couples-corner/[slug], behind the age gate)
     // if (game.id === 'fantaspin') return <FantaspinGame />;
+    if (gameId === 'heat-truth-or-dare') return <HeatTruthOrDare />;
     if (game.id === 'midnight-dice') return <MidnightDiceGame />;
-    if (game.id === 'naughty-truth-or-dare') {
-        return (
-            <InteractivePlayground
-                initialType="truth_or_dare"
-                lockType
-                questions={NAUGHTY_TOD_QUESTIONS}
-            />
-        );
-    }
+    if (game.id === 'naughty-truth-or-dare') return <CoupleTruthOrDare />;
 
     const playType = PLAYABLE_TYPES[game.id];
     if (playType) {

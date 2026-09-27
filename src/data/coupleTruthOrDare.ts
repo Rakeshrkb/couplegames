@@ -1,13 +1,6 @@
-import { TeaserQuestion } from '@/types/game';
-export const GAME_PROMPTS: Record<string, string[]> = {  'heat-truth-or-dare': [
-    '🍬 Truth: What was your very first impression of me?',
-    "🍬 Truth: What's one small thing I do that always makes you smile?",
-    '🍬 Dare: Give me a 20-second hug without letting go.',
-    '😘 Truth: Describe our first kiss in three words.',
-    '😘 Dare: Whisper a compliment in my ear.',
-    "🌶️ Truth: What's your biggest turn-on about me? (unlock for more)",
-  ],
-};
+// Couple Truth or Dare prompts. Import this ONLY from server code (src/lib/packGames.ts),
+// so the full list never reaches the browser.
+import type { TeaserQuestion } from '@/types/game';
 
 const naughty = (id: number, truthText: string, dareText: string): TeaserQuestion => ({
   id: `ntod-${id}`,
@@ -18,7 +11,7 @@ const naughty = (id: number, truthText: string, dareText: string): TeaserQuestio
   dareText,
 });
 
-export const NAUGHTY_TOD_QUESTIONS: TeaserQuestion[] = [
+export const COUPLE_TOD: TeaserQuestion[] = [
   naughty(1, "What is one romantic fantasy of mine you find irresistible?", "Whisper the spiciest compliment you can think of in my ear."),
   naughty(2, "What outfit of mine makes your heart beat fastest?", "Give your partner a slow kiss on the neck."),
   naughty(3, "Where is the most unexpected place you've wanted to kiss me?", "Kiss your partner somewhere other than their lips. They choose where."),

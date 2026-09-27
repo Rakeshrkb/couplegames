@@ -87,6 +87,24 @@ export const GAMES_DATA: GameItem[] = [
   //     'Passionate Sunset Hold — Share a slow 60-second kiss with eyes closed.'
   //   ]
   // },
+  // {
+  //   id: 'heat-truth-or-dare',
+  //   title: 'Heat-Level Truth or Dare',
+  //   slug: 'spicy-truth-or-dare-for-couples',
+  //   icon: '🌶️',
+  //   category: 'couples',
+  //   questionCount: 200,
+  //   badge: 'Couples Pack',
+  //   isCustomGame: true,
+  //   description:
+  //     'Truth or Dare for couples with 4 heat levels: Sweet, Flirty, Spicy and Wild. Start cute and let auto-heat turn things up every few turns.',
+  //   shortDescription: '200 truths & dares across 4 heat levels.',
+  //   sampleQuestions: [
+  //     '🍬 Truth: What was your very first impression of me?',
+  //     '😘 Dare: Whisper a compliment in my ear.',
+  //     "🌶️ Truth: What's your biggest turn-on about me?",
+  //   ],
+  // },
   {
     id: 'naughty-truth-or-dare',
     title: 'Couple Truth or Dare',

@@ -1,34 +1,32 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Dices, Flame } from 'lucide-react';
-
-const ACTIONS = [
-  { label: 'Kiss', emoji: '💋' },
-  { label: 'Massage', emoji: '💆' },
-  { label: 'Caress', emoji: '🤲' },
-  { label: 'Nibble', emoji: '😈' },
-  { label: 'Blow softly on', emoji: '🌬️' },
-  { label: 'Trail fingertips along', emoji: '✨' },
-];
-
-const SPOTS = [
-  { label: 'Neck', emoji: '🦢' },
-  { label: 'Lips', emoji: '👄' },
-  { label: 'Ear', emoji: '👂' },
-  { label: 'Shoulders', emoji: '🫶' },
-  { label: 'Lower back', emoji: '🌙' },
-  { label: 'Collarbone', emoji: '💎' },
-];
+import { Dices, Flame, Loader2 } from 'lucide-react';
+// Only the types are imported. The dice faces come from the server (full set only with a pass)
+import type { DiceFace, DiceSet } from '@/data/midnightDice';
+import { usePackGame } from '@/hooks/usePackGame';
+import { PackPaywall } from './PackPaywall';
 
 const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
 export const MidnightDiceGame: React.FC = () => {
-  const [action, setAction] = useState(ACTIONS[0]);
-  const [spot, setSpot] = useState(SPOTS[0]);
+  const { data: dice, unlocked, freeTurns, total, loading, error } = usePackGame<DiceSet>('midnight-dice');
+
+  const [action, setAction] = useState<DiceFace | null>(null);
+  const [spot, setSpot] = useState<DiceFace | null>(null);
   const [isRolling, setIsRolling] = useState(false);
   const [hasRolled, setHasRolled] = useState(false);
+  const [rolls, setRolls] = useState(0);
+  const [showPaywall, setShowPaywall] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Show the first faces once the dice arrive (and again after unlocking)
+  useEffect(() => {
+    if (!dice) return;
+    setAction(dice.actions[0] ?? null);
+    setSpot(dice.spots[0] ?? null);
+    setShowPaywall(false);
+  }, [dice]);
 
   // Stop the roll animation if the modal closes mid-roll
   useEffect(() => {
@@ -38,13 +36,21 @@ export const MidnightDiceGame: React.FC = () => {
   }, []);
 
   const handleRoll = () => {
-    if (isRolling) return;
+    if (isRolling || !dice) return;
+
+    // Free preview used up: show the paywall instead of rolling
+    if (!unlocked && rolls >= freeTurns) {
+      setShowPaywall(true);
+      return;
+    }
+
     setIsRolling(true);
+    setRolls((n) => n + 1);
 
     let ticks = 0;
     intervalRef.current = setInterval(() => {
-      setAction(pick(ACTIONS));
-      setSpot(pick(SPOTS));
+      setAction(pick(dice.actions));
+      setSpot(pick(dice.spots));
       ticks++;
 
       if (ticks >= 12) {
@@ -56,6 +62,26 @@ export const MidnightDiceGame: React.FC = () => {
     }, 80);
   };
 
+  if (loading || error || !dice || !action || !spot) {
+    return (
+      <div className="bg-white rounded-3xl p-8 border-2 border-rose-200 min-h-[260px] flex flex-col items-center justify-center text-center text-sm text-gray-400">
+        {error ? (
+          'Could not load the game. Please refresh the page.'
+        ) : (
+          <>
+            <Loader2 className="w-6 h-6 text-rose-400 animate-spin mb-2" /> Loading dice…
+          </>
+        )}
+      </div>
+    );
+  }
+
+  if (showPaywall) {
+    return <PackPaywall played={freeTurns} total={total} title="Want the full dice? 🎲🔥" />;
+  }
+
+  const rollsLeft = Math.max(freeTurns - rolls, 0);
+
   return (
     <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-rose-300 shadow-xl shadow-rose-100/50">
       <div className="text-center mb-6">
@@ -65,6 +91,11 @@ export const MidnightDiceGame: React.FC = () => {
         </div>
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Midnight Fantasy Dice 🎲</h2>
         <p className="text-xs sm:text-sm text-gray-500 mt-1">Roll both dice and do what they say.</p>
+        {!unlocked && (
+          <p className="text-[11px] font-bold text-rose-500 mt-2">
+            Free preview · {rollsLeft} free {rollsLeft === 1 ? 'roll' : 'rolls'} left
+          </p>
+        )}
       </div>
 
       {/* Dice */}

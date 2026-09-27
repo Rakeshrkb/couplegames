@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Flame, ArrowRight } from 'lucide-react';
+import { sendGAEvent } from '@next/third-parties/google';
 
 export const HotFantasiesCallout: React.FC = () => {
   return (
@@ -41,7 +42,7 @@ export const HotFantasiesCallout: React.FC = () => {
                 🎰 3 Free Spins Included
               </span>
               <span className="flex items-center gap-1.5 bg-rose-50 border border-rose-200 px-3.5 py-1.5 rounded-full shadow-2xs">
-                🔓 ₹25 INR for 24h Full Access
+                🔓 ₹29 INR for 24h Full Access
               </span>
               <span className="flex items-center gap-1.5 bg-rose-50 border border-rose-200 px-3.5 py-1.5 rounded-full shadow-2xs">
                 ⚡ 1-Click Auto Identity
@@ -54,6 +55,7 @@ export const HotFantasiesCallout: React.FC = () => {
           <div className="shrink-0 text-center">
             <Link
               href="/couples-corner"
+              onClick={() => sendGAEvent('event', 'couples_corner_click', { source: 'Couples Corner ⭐' })}
               className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white font-extrabold text-base shadow-lg shadow-rose-200 hover:shadow-xl hover:shadow-rose-300 hover:scale-105 active:scale-95 transition-all duration-200 border border-rose-400/40"
             >
               <span>This Way Please </span>

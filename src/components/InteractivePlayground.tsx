@@ -11,17 +11,22 @@ interface InteractivePlaygroundProps {
   initialType?: PlaygroundType;
   lockType?: boolean; // true = hide the tab pills (used inside the game modal)
   questions?: TeaserQuestion[];
+  freeLimit?: number;          // locked games: how many prompts are free
+  paywall?: React.ReactNode;   // shown instead of the card once freeLimit is reached
 }
 
 export const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({
   initialType = 'would_you_rather',
   lockType = false,
   questions,
+  freeLimit,
+  paywall,
 }) => {
   const [activeType, setActiveType] = useState<PlaygroundType>(initialType);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<'A' | 'B' | null>(null);
   const [revealedTruthOrDare, setRevealedTruthOrDare] = useState<'truth' | 'dare' | null>(null);
+  const [limitReached, setLimitReached] = useState(false);
 
   // Filter questions by type
   const currentQuestions = (questions ?? HERO_TEASER_QUESTIONS).filter(q => q.type === activeType);
@@ -32,6 +37,11 @@ export const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({
   };
 
   const handleNext = () => {
+    // Locked game: after the last free prompt, show the paywall instead of looping
+    if (freeLimit !== undefined && currentIndex + 1 >= freeLimit) {
+      setLimitReached(true);
+      return;
+    }
     setSelectedOption(null);
     setRevealedTruthOrDare(null);
     setCurrentIndex((prev) => (prev + 1) % currentQuestions.length);
@@ -83,7 +93,10 @@ export const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({
         </div>
       )}
 
-      {/* Main Interactive Card Container */}
+      {limitReached && paywall ? (
+        paywall
+      ) : (
+      /* Main Interactive Card Container */
       <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-rose-100 shadow-xl shadow-rose-100/50 relative overflow-hidden">
 
         <div className="text-center mb-6">
@@ -254,6 +267,7 @@ export const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({
         </div>
 
       </div>
+      )}
 
     </section>
   );

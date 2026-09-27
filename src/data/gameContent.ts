@@ -337,4 +337,21 @@ export const GAME_CONTENT: Record<string, GameContent> = {
       "Revisit your list every few months and tick things off together.",
     ],
   },
+  'heat-truth-or-dare': {
+    intro: [
+      'Heat-Level Truth or Dare lets couples choose how bold they want to get, from sweet and romantic to wild.',
+      'Auto-heat raises the level every six turns, so the game builds naturally as you play.',
+    ],
+    howToPlay: [
+      'Add your names so the game shows whose turn it is.',
+      'Pick a starting level, or leave auto-heat on and begin with Sweet.',
+      'Choose Truth, Dare or Surprise, then do it or pass.',
+      'Tap "Done" to hand the turn to your partner.',
+    ],
+    tips: [
+      'Agree on limits before Spicy and Wild. A pass is always allowed.',
+      'Turn auto-heat off for a slow, romantic night.',
+      'Set a phone timer for timed dares to keep it fair.',
+    ],
+  },
 };

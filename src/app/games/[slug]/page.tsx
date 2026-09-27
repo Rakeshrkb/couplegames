@@ -100,14 +100,6 @@ export default async function GamePage(
                 <span className="text-rose-600">{game.title}</span>
             </nav>
 
-            {/* Header */}
-            <div className="text-center mt-6 mb-6">
-                <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-900">
-                    {getHeading(game.id, game.title, questions.length)}
-                </h1>
-                <p className="text-sm text-gray-600 mt-2 max-w-2xl mx-auto">{game.description}</p>
-            </div>
-
             {/* Play directly on the page */}
 
             <section id="play" className="scroll-mt-24">
@@ -145,6 +137,14 @@ export default async function GamePage(
                     </div>
                 </section>
             )}
+
+            {/* Header */}
+            <div className="text-center mt-6 mb-6">
+                <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-900">
+                    {getHeading(game.id, game.title, questions.length)}
+                </h1>
+                <p className="text-sm text-gray-600 mt-2 max-w-2xl mx-auto">{game.description}</p>
+            </div>
 
             {/* All questions (text for Google + people who prefer a list) */}
             {questions.length > 0 && (

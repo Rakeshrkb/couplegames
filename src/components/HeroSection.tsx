@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Sparkles, Gamepad2, Heart, ArrowDown, Flame, ArrowRight } from 'lucide-react';
+import { sendGAEvent } from '@next/third-parties/google';
 
 interface HeroSectionProps {
   onExploreClick: () => void;
@@ -55,6 +56,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick }) => {
           {/* Button 2 (IN THE MIDDLE): Couples Corner 💞 (Eye-catching Flame & Beautiful Matching Gradient) */}
           <Link
             href="/couples-corner"
+            onClick={() => sendGAEvent('event', 'couples_corner_click', { source: 'home_button' })}
             className="w-full md:w-auto group relative inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-pink-600 text-white text-sm sm:text-base font-extrabold shadow-lg shadow-rose-300/80 hover:shadow-xl hover:shadow-rose-400 hover:scale-105 active:scale-95 transition-all duration-200 border border-red-400/30"
           >
             {/* Eye-catching Pulsing Burning Flame Container */}
